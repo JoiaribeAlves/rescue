@@ -33,6 +33,7 @@ export async function createRescue(data: ICreateRescue) {
 
     return true;
   } catch (error) {
+    console.error(error);
     return false;
   } finally {
     await db.$disconnect();
