@@ -3,7 +3,7 @@
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CheckIcon, Loader2, SaveIcon, XIcon } from 'lucide-react'
+import { CheckIcon, Loader2, Loader2Icon, SaveIcon, XIcon } from 'lucide-react'
 
 import {
   Form,
@@ -15,6 +15,8 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from './ui/input'
 import { Button } from './ui/button'
+import { createRescue } from '@/actions/createRescue'
+import { toast } from 'sonner'
 
 const formSchema = z.object({
   street: z.string().min(1, "Nome da rua é obrigatório"),
@@ -23,9 +25,6 @@ const formSchema = z.object({
   referencePoint: z.string().min(1, "Ponto de referência é obrigatório"),
   city: z.string().min(1, "Cidade é obrigatória"),
   peopleNumber: z.string().min(1, "Número de pessoas é obrigatório"),
-  priority: z.string({
-    required_error: "Defina uma prioridade para o resgate"
-  }),
   note: z.string().min(0),
 })
 
@@ -39,13 +38,26 @@ export function HelpForm() {
       referencePoint: "",
       city: "",
       peopleNumber: "",
-      priority: "",
       note: "",
     },
   })
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data)
+    const result = await createRescue(data);
+
+    if (result) {
+      form.reset()
+
+      toast.success("Seu pedido de resgate foi registrado com sucesso!", {
+        position: "top-center",
+        duration: 3500,
+      })
+    } else {
+      toast.error("Falha ao criar pedido de resgate. Tente novamente.", {
+        position: "top-center",
+        duration: 3500,
+      })
+    }
   }
 
   return (
@@ -183,7 +195,18 @@ export function HelpForm() {
           </fieldset>
         </div>
 
-        <Button type="submit">Pedir resgate</Button>
+        <Button type="submit" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? (
+            <>
+              <Loader2Icon className="h-4 w-4 animate-spin" />
+              Aguarde...
+            </>
+          ) : (
+            <>
+              Pedir resgate
+            </>
+          )}
+        </Button>
       </form>
     </Form>
   )
