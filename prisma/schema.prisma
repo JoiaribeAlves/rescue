@@ -13,6 +13,7 @@ model Rescue {
   phoneNumber    String
   note           String?
   addresses      Address[]
+  status         String    @default("Aguardando")
   createdAt      DateTime  @default(now())
   updateddAt     DateTime  @updatedAt
 }
