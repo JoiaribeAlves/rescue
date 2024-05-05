@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Rescue {
+  id             String    @id @default(uuid())
+  peopleQuantity Int
+  note           String?
+  addresses      Address[]
+  createdAt      DateTime  @default(now())
+  updateddAt     DateTime  @updatedAt
+}
+
+model Address {
+  id             String   @id @default(uuid())
+  street         String
+  number         String
+  district       String
+  referencePoint String
+  city           String
+  state          String   @default("RS")
+  rescue         Rescue?  @relation(fields: [rescueId], references: [id])
+  rescueId       String?
+  createdAt      DateTime @default(now())
+  updateddAt     DateTime @updatedAt
+}
