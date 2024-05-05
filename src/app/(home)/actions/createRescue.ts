@@ -19,6 +19,7 @@ export async function createRescue(data: ICreateRescue) {
       data: {
         peopleQuantity: Number(data.peopleNumber),
         phoneNumber: data.phoneNumber,
+        note: data.note,
       }
     });
 
