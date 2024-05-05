@@ -5,6 +5,10 @@ import { db } from "@/lib/db";
 export async function getRequests() {
   try {
     const requests = await db.rescue.findMany({
+      orderBy: [
+        { createdAt: "desc" },
+        { status: "asc" },
+      ],
       include: {
         addresses: true,
       },
