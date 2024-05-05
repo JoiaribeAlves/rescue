@@ -10,6 +10,7 @@ datasource db {
 model Rescue {
   id             String    @id @default(uuid())
   peopleQuantity Int
+  phoneNumber    String
   note           String?
   addresses      Address[]
   createdAt      DateTime  @default(now())

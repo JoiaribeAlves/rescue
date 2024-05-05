@@ -10,6 +10,7 @@ interface ICreateRescue {
   referencePoint: string;
   city: string;
   peopleNumber: string;
+  phoneNumber: string;
 }
 
 export async function createRescue(data: ICreateRescue) {
@@ -17,6 +18,7 @@ export async function createRescue(data: ICreateRescue) {
     const rescue = await db.rescue.create({
       data: {
         peopleQuantity: Number(data.peopleNumber),
+        phoneNumber: data.phoneNumber,
       }
     });
 

@@ -26,6 +26,7 @@ const formSchema = z.object({
   city: z.string().min(1, "Cidade é obrigatória"),
   peopleNumber: z.string().min(1, "Número de pessoas é obrigatório"),
   note: z.string().min(0),
+  phoneNumber: z.string().min(1, "Número de telefone é obrigatório"),
 })
 
 export function HelpForm() {
@@ -39,6 +40,7 @@ export function HelpForm() {
       city: "",
       peopleNumber: "",
       note: "",
+      phoneNumber: "",
     },
   })
 
@@ -126,6 +128,23 @@ export function HelpForm() {
                     <Input
                       type="text"
                       placeholder="Ponto de referência"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="phoneNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="Número de telefone"
                       {...field}
                     />
                   </FormControl>
