@@ -198,7 +198,7 @@ export function HelpForm() {
         <Button type="submit" disabled={form.formState.isSubmitting}>
           {form.formState.isSubmitting ? (
             <>
-              <Loader2Icon className="h-4 w-4 animate-spin" />
+              <Loader2Icon className="h-4 w-4 animate-spin" />{" "}
               Aguarde...
             </>
           ) : (
