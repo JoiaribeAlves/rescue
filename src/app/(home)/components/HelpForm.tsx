@@ -205,7 +205,11 @@ export function HelpForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea placeholder="Digite uma observação (se houver)" className='h-[200px] resize-none' />
+                    <Textarea
+                      placeholder="Digite uma observação (se houver)"
+                      className='h-[200px] resize-none'
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
