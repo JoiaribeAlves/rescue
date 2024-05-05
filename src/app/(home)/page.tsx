@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { HelpForm } from "@/components/HelpForm";
+import { HelpForm } from "./components/HelpForm";
 
 export const metadata: Metadata = {
   title: "Pedir resgate - Enchentes RS",

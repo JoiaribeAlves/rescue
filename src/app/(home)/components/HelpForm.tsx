@@ -11,11 +11,11 @@ import {
   FormItem,
   FormControl,
   FormMessage,
-} from './ui/form'
+} from '../../../components/ui/form'
 import { Textarea } from "@/components/ui/textarea"
-import { Input } from './ui/input'
-import { Button } from './ui/button'
-import { createRescue } from '@/actions/createRescue'
+import { Input } from '../../../components/ui/input'
+import { Button } from '../../../components/ui/button'
+import { createRescue } from '@/app/(home)/actions/createRescue'
 import { toast } from 'sonner'
 
 const formSchema = z.object({
