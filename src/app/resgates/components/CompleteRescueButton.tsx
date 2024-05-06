@@ -1,8 +1,20 @@
 "use client";
 
-import { Button } from '@/components/ui/button'
-import { completeRescue } from '../actions/completeRescue';
 import { toast } from 'sonner';
+
+import { completeRescue } from '../actions/completeRescue';
+import { Button } from '@/components/ui/button'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 interface ICompleteRescueButton {
   rescueId: string;
@@ -27,13 +39,38 @@ export function CompleteRescueButton({ rescueId, disabled }: ICompleteRescueButt
   }
 
   return (
-    <Button
-      variant="default"
-      className="w-full"
-      disabled={disabled}
-      onClick={handleCompleteRescue}
-    >
-      Marcar como resgatado
-    </Button>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button
+          variant="default"
+          className="w-full"
+          disabled={disabled}
+        >
+          Marcar como resgatado
+        </Button>
+      </AlertDialogTrigger>
+
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            Você realmente deseja marcar este resgate como concluído?
+          </AlertDialogTitle>
+
+          <AlertDialogDescription>
+            Esta ação não pode ser desfeita
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+
+        <AlertDialogFooter>
+          <AlertDialogCancel>
+            Voltar
+          </AlertDialogCancel>
+
+          <AlertDialogAction onClick={handleCompleteRescue}>
+            Continuar
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }
