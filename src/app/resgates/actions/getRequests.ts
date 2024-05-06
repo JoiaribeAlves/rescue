@@ -6,19 +6,14 @@ export async function getRequests() {
   try {
     const requests = await db.rescue.findMany({
       where: {
-        status: "Aguardando",
+        accomplished: false,
       },
       include: {
         addresses: true,
       },
-      orderBy: [
-        {
-          status: "asc",
-        },
-        {
-          createdAt: "desc",
-        },
-      ],
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     return requests;
