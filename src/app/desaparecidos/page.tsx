@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Lista de desaparecidos - Enchentes RS",
+  description: "Aqui você encontrará a lista de pessoas desaparecidas",
+};
+
 export default function Missing() {
   return (
     <div className="py-8 px-4 lg:px-8 flex flex-col gap-6">

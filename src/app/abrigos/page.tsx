@@ -1,3 +1,10 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Lista de abrigos - Enchentes RS",
+  description: "Aqui você encontrará os endereços dos abrigos",
+};
+
 export default function Shelter() {
   return (
     <div className="py-8 px-4 lg:px-8 flex flex-col gap-6">

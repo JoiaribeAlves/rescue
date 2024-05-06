@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Pedidos de resgate - Enchentes RS",
-  description: "Aqui você encontra os pedidos de resgate",
+  title: "Solicitações de resgate - Enchentes RS",
+  description: "Aqui você encontrará os endereços das pessoas que estão precisando ser resgatadas",
 };
 
 import { getRequests } from "./actions/getRequests"
