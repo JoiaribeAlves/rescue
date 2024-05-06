@@ -5,14 +5,7 @@ import Link from 'next/link';
 import { Prisma } from '@prisma/client';
 
 import { phoneMask } from '@/helpers/phoneMask';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter
-} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { CompleteRescueButton } from './CompleteRescueButton';
 
 interface IRequestList {
@@ -24,96 +17,102 @@ interface IRequestList {
 }
 
 export function RequestList({ requestList }: IRequestList) {
-  const [filters, setFilters] = useState({
-    city: '',
-    street: '',
-    district: '',
-  });
+  const [cityFilter, setCityFilter] = useState('');
+  const [streetFilter, setStreetFilter] = useState('');
+  const [districtFilter, setDistrictFilter] = useState('');
 
   const filteredList = requestList.filter(request => {
-    const { city, street, district } = filters;
-    if (city && !request.addresses.some(address => address.city.toLowerCase().includes(city.toLowerCase()))) return false;
-    if (street && !request.addresses.some(address => address.street.toLowerCase().includes(street.toLowerCase()))) return false;
-    if (district && !request.addresses.some(address => address.district.toLowerCase().includes(district.toLowerCase()))) return false;
-    return true;
+    return (
+      (cityFilter === '' || request.addresses?.city.toLowerCase().includes(cityFilter.toLowerCase())) &&
+      (streetFilter === '' || request.addresses?.street.toLowerCase().includes(streetFilter.toLowerCase())) &&
+      (districtFilter === '' || request.addresses?.district.toLowerCase().includes(districtFilter.toLowerCase()))
+    );
   });
-
-  const handleFilterChange = (key: string, value: string) => {
-    setFilters(prevFilters => ({
-      ...prevFilters,
-      [key]: value,
-    }));
-  };
 
   return (
     <>
-      <div className="flex flex-col lg:flex-row gap-4 mb-4 bg-muted p-4 rounded-lg">
-        <input
-          type="text"
-          placeholder="Cidade"
-          value={filters.city}
-          onChange={e => handleFilterChange('city', e.target.value)}
-          className="bg-white p-3 grow rounded-md outline-none"
-        />
-        <input
-          type="text"
-          placeholder="Rua"
-          value={filters.street}
-          onChange={e => handleFilterChange('street', e.target.value)}
-          className="bg-white p-3 grow rounded-md outline-none"
-        />
-        <input
-          type="text"
-          placeholder="Bairro"
-          value={filters.district}
-          onChange={e => handleFilterChange('district', e.target.value)}
-          className="bg-white p-3 grow rounded-md outline-none"
-        />
+      <div className="flex flex-col lg:flex-row gap-4 mb-3 bg-muted p-3 rounded-md">
+        <div className="grow">
+          <Input
+            type="text"
+            placeholder="Filtrar por Cidade"
+            className="p-3 outline-none rounded-md"
+            value={cityFilter}
+            onChange={(e) => setCityFilter(e.target.value)}
+          />
+        </div>
+
+        <div className="grow">
+          <Input
+            type="text"
+            placeholder="Filtrar por Rua"
+            className="p-3 outline-none rounded-md grow"
+            value={streetFilter}
+            onChange={(e) => setStreetFilter(e.target.value)}
+          />
+        </div>
+
+        <div className="grow">
+          <Input
+            type="text"
+            placeholder="Filtrar por Bairro"
+            className="p-3 outline-none rounded-md grow"
+            value={districtFilter}
+            onChange={(e) => setDistrictFilter(e.target.value)}
+          />
+        </div>
       </div>
 
-      <div className="grid gap-4 grid-cols-1 lg:grid-cols-4">
-        {filteredList.map((request, index) => (
-          <div key={index} className="flex flex-col gap-4 shadow-lg p-4 rounded-md">
-            <Card className={`grow ${request.status === "Aguardando" ? "bg-red-100" : "bg-green-100"}`}>
-              <CardHeader>
-                <CardTitle>Endereço:</CardTitle>
-                <CardDescription>
-                  {request.addresses[0].street}{", "}
-                  {request.addresses[0].number}{", "}
-                  {request.addresses[0].district}{", "}
-                  {request.addresses[0]?.referencePoint}{", "}
-                  {request.addresses[0].city}
-                </CardDescription>
-              </CardHeader>
-
-              <CardContent>
-                <p>Quantidade de pessoas:{" "}
-                  <span className="font-medium">
-                    {request.peopleQuantity}
-                  </span>
-                </p>
-
-                <p>Número de telefone:{" "}
+      {filteredList.length === 0 ? (
+        <h2 className="font-semibold text-sm opacity-75">
+          Sua busca não retornou dados
+        </h2>
+      ) : (
+        <ul className="grid gap-4 grid-cols-1 lg:grid-cols-4">
+          {filteredList.map(request => (
+            <li
+              key={request.id}
+              className="p-3 rounded-md shadow-lg bg-white flex flex-col gap-3"
+            >
+              <div className="flex flex-col gap-2 grow">
+                <div className="font-medium">
+                  <strong className="font-medium">Telefone: </strong>
                   <Link
                     href={`https://wa.me/55${request.phoneNumber}`}
-                    className="font-medium">
+                    className='text-sm opacity-75'
+                  >
                     {phoneMask(request.phoneNumber)}
                   </Link>
-                </p>
-              </CardContent>
+                </div>
 
-              <CardFooter>
-                <p>{request.note}</p>
-              </CardFooter>
-            </Card>
+                <div>
+                  <strong className="font-medium">Endereço:</strong>
+                  <p className='text-sm opacity-75'>{request.addresses?.street}, {request.addresses?.number} - {request.addresses?.district}, {request.addresses?.city}, {request.addresses?.state}</p>
+                </div>
 
-            <CompleteRescueButton
-              rescueId={request.id}
-              disabled={request.status !== "Aguardando"}
-            />
-          </div>
-        ))}
-      </div>
+                <div>
+                  <strong className="font-medium">Quantidade de pessoas: </strong>
+                  <p className='text-sm opacity-75 inline'>{request.peopleQuantity}</p>
+                </div>
+
+                {request.note && (
+                  <div>
+                    <strong className="font-medium">Observações:</strong>
+                    <p className='text-sm opacity-75'>
+                      {request.note}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <CompleteRescueButton
+                rescueId={request.id}
+                disabled={request.accomplished}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
     </>
   )
 }
