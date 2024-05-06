@@ -4,21 +4,21 @@ import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
 interface ICreateRescue {
-  number: string;
-  note: string;
   street: string;
+  number: string;
   district: string;
-  referencePoint: string;
-  city: string;
-  peopleNumber: string;
+  referencePoint?: string;
   phoneNumber: string;
+  city: string;
+  peopleQuantity: string;
+  note?: string;
 }
 
 export async function createRescue(data: ICreateRescue) {
   try {
     const rescue = await db.rescue.create({
       data: {
-        peopleQuantity: Number(data.peopleNumber),
+        peopleQuantity: Number(data.peopleQuantity),
         phoneNumber: data.phoneNumber,
         note: data.note,
       }

@@ -23,10 +23,10 @@ const formSchema = z.object({
   number: z.string().min(1, "Número da casa é obrigatório"),
   district: z.string().min(1, "Bairro é obrigatório"),
   referencePoint: z.string().min(0),
-  city: z.string().min(1, "Cidade é obrigatória"),
-  peopleNumber: z.string().min(1, "Número de pessoas é obrigatório"),
-  note: z.string().min(0),
   phoneNumber: z.string().min(1, "Número de telefone é obrigatório"),
+  city: z.string().min(1, "Cidade é obrigatória"),
+  peopleQuantity: z.string().min(1, "Número de pessoas é obrigatório"),
+  note: z.string().min(0),
 })
 
 export function HelpForm() {
@@ -37,10 +37,10 @@ export function HelpForm() {
       number: "",
       district: "",
       referencePoint: "",
-      city: "",
-      peopleNumber: "",
-      note: "",
       phoneNumber: "",
+      city: "",
+      peopleQuantity: "",
+      note: "",
     },
   })
 
@@ -69,9 +69,9 @@ export function HelpForm() {
         className="bg-muted flex flex-col gap-6 rounded-lg p-3"
       >
         <div className="flex flex-col gap-2">
-          <h1 className="font-medium">Endereço de resgate</h1>
+          <h2 className="font-medium">Endereço de resgate</h2>
 
-          <fieldset className="grid grid-cols-2 gap-3">
+          <fieldset className="grid grid-cols-1 gap-3 lg:grid-cols-2">
             <FormField
               control={form.control}
               name="street"
@@ -178,7 +178,7 @@ export function HelpForm() {
           <fieldset>
             <FormField
               control={form.control}
-              name="peopleNumber"
+              name="peopleQuantity"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -221,7 +221,7 @@ export function HelpForm() {
         <Button type="submit" disabled={form.formState.isSubmitting}>
           {form.formState.isSubmitting ? (
             <>
-              <Loader2Icon className="h-4 w-4 animate-spin" />{" "}
+              <Loader2Icon className="h-4 w-4 mr-1 animate-spin" />
               Aguarde...
             </>
           ) : (
