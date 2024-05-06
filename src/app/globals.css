@@ -56,6 +56,6 @@
       @apply box-border;
     }
     body {
-      @apply bg-background text-foreground min-h-screen;
+      @apply bg-background text-foreground min-h-screen flex flex-col;
     }
   }
