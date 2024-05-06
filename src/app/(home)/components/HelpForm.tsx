@@ -20,9 +20,9 @@ import { toast } from 'sonner'
 
 const formSchema = z.object({
   street: z.string().min(1, "Nome da rua é obrigatório"),
-  number: z.string().min(1, "Núero da casa é obrigatório"),
+  number: z.string().min(1, "Número da casa é obrigatório"),
   district: z.string().min(1, "Bairro é obrigatório"),
-  referencePoint: z.string().min(1, "Ponto de referência é obrigatório"),
+  referencePoint: z.string().min(0),
   city: z.string().min(1, "Cidade é obrigatória"),
   peopleNumber: z.string().min(1, "Número de pessoas é obrigatório"),
   note: z.string().min(0),
