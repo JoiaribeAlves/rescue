@@ -13,7 +13,7 @@ export function Header() {
 
   return (
     <header className="flex justify-between items-center px-4 bg-primary text-primary-foreground lg:px-8 h-16">
-      <Link href="/" className="relative h-8 w-10 lg:h-16 lg:w-[70px]">
+      <Link href="/" className="relative h-8 w-10 lg:h-10 lg:w-12">
         <Image src="/logo-white.png" alt="Logo" fill sizes="100%" />
       </Link>
 
