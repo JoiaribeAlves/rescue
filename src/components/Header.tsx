@@ -31,8 +31,8 @@ export function Header() {
 
           <li>
             <Link
-              href="/r
-              sgates" className={`p-2 rounded-md ${path === '/resgates' ? "bg-white text-primary" : "text-white"}`}
+              href="/resgates"
+              className={`p-2 rounded-md ${path === '/resgates' ? "bg-white text-primary" : "text-white"}`}
             >
               Solicitações de resgate
             </Link>
@@ -40,8 +40,8 @@ export function Header() {
 
           <li>
             <Link
-              href="/a
-              rigos" className={`p-2 rounded-md ${path === '/abrigos' ? "bg-white text-primary" : "text-white"}`}
+              href="/abrigos"
+              className={`p-2 rounded-md ${path === '/abrigos' ? "bg-white text-primary" : "text-white"}`}
             >
               Abrigos
             </Link>
