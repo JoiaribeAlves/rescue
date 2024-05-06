@@ -47,7 +47,7 @@ export function RequestList({ requestList }: IRequestList) {
 
   return (
     <>
-      <div className="flex gap-4 mb-4 bg-muted p-4 rounded-lg">
+      <div className="flex flex-col lg:flex-row gap-4 mb-4 bg-muted p-4 rounded-lg">
         <input
           type="text"
           placeholder="Cidade"
