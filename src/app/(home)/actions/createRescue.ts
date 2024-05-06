@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
 
 interface ICreateRescue {
   number: string;
@@ -33,6 +34,8 @@ export async function createRescue(data: ICreateRescue) {
         rescueId: rescue.id,
       }
     });
+
+    revalidatePath("/resgates", "page");
 
     return true;
   } catch (error) {

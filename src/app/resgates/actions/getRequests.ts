@@ -6,8 +6,12 @@ export async function getRequests() {
   try {
     const requests = await db.rescue.findMany({
       orderBy: [
-        { createdAt: "desc" },
-        { status: "asc" },
+        {
+          status: "asc",
+        },
+        {
+          createdAt: "desc",
+        },
       ],
       include: {
         addresses: true,
