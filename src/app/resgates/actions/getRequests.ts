@@ -5,6 +5,12 @@ import { db } from "@/lib/db";
 export async function getRequests() {
   try {
     const requests = await db.rescue.findMany({
+      where: {
+        status: "Aguardando",
+      },
+      include: {
+        addresses: true,
+      },
       orderBy: [
         {
           status: "asc",
@@ -13,9 +19,6 @@ export async function getRequests() {
           createdAt: "desc",
         },
       ],
-      include: {
-        addresses: true,
-      },
     });
 
     return requests;
