@@ -1,9 +1,9 @@
-'use client'
+"use client"
 
-import { z } from 'zod'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { CheckIcon, Loader2, Loader2Icon, SaveIcon, XIcon } from 'lucide-react'
+import { z } from "zod"
+import { Controller, useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { CheckIcon, Loader2, Loader2Icon, SaveIcon, XIcon } from "lucide-react"
 
 import {
   Form,
@@ -11,12 +11,13 @@ import {
   FormItem,
   FormControl,
   FormMessage,
-} from '../../../components/ui/form'
+} from "../../../components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
-import { Input } from '../../../components/ui/input'
-import { Button } from '../../../components/ui/button'
-import { createRescue } from '@/app/(home)/actions/createRescue'
-import { toast } from 'sonner'
+import { Input } from "../../../components/ui/input"
+import { Button } from "../../../components/ui/button"
+import { createRescue } from "@/app/(home)/actions/createRescue"
+import { toast } from "sonner"
+import PhoneInput from "@/components/ui/phone-input"
 
 const formSchema = z.object({
   street: z.string().min(1, "Nome da rua é obrigatório"),
@@ -26,7 +27,12 @@ const formSchema = z.object({
   city: z.string().min(1, "Cidade é obrigatória"),
   peopleNumber: z.string().min(1, "Número de pessoas é obrigatório"),
   note: z.string().min(0),
-  phoneNumber: z.string().min(1, "Número de telefone é obrigatório"),
+  phoneNumber: z
+    .string()
+    .min(1, "Número de telefone é obrigatório")
+    .max(15, "Você ultrapassou o limite de 15 caracteres")
+    .regex(/^\(\d{2}\) \d{5}-\d{4}$/, "Preencha todos os números")
+    .transform((str) => str.replace(/\D/g, "")),
 })
 
 export function HelpForm() {
@@ -45,7 +51,7 @@ export function HelpForm() {
   })
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    const result = await createRescue(data);
+    const result = await createRescue(data)
 
     if (result) {
       form.reset()
@@ -78,11 +84,7 @@ export function HelpForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Nome da rua"
-                      {...field}
-                    />
+                    <Input type="text" placeholder="Nome da rua" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -142,11 +144,7 @@ export function HelpForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Número de telefone"
-                      {...field}
-                    />
+                    <PhoneInput {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -159,11 +157,7 @@ export function HelpForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Cidade"
-                      {...field}
-                    />
+                    <Input type="text" placeholder="Cidade" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -207,7 +201,7 @@ export function HelpForm() {
                   <FormControl>
                     <Textarea
                       placeholder="Digite uma observação (se houver)"
-                      className='h-[200px] resize-none'
+                      className="h-[200px] resize-none"
                       {...field}
                     />
                   </FormControl>
@@ -221,13 +215,10 @@ export function HelpForm() {
         <Button type="submit" disabled={form.formState.isSubmitting}>
           {form.formState.isSubmitting ? (
             <>
-              <Loader2Icon className="h-4 w-4 animate-spin" />{" "}
-              Aguarde...
+              <Loader2Icon className="h-4 w-4 animate-spin" /> Aguarde...
             </>
           ) : (
-            <>
-              Pedir resgate
-            </>
+            <>Pedir resgate</>
           )}
         </Button>
       </form>
