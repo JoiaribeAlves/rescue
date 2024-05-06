@@ -11,7 +11,7 @@ export async function completeRescue(rescueId: string) {
         id: rescueId,
       },
       data: {
-        status: "Concluído",
+        accomplished: true,
       },
     });
 
