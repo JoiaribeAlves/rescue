@@ -1,47 +1,59 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { PhoneIcon } from "lucide-react"
-import Link from "next/link"
+"use client";
 
-function Header() {
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation"
+
+export function Header() {
+  const path = usePathname();
+
   return (
-    <Card className="bg-primary text-primary-foreground border-none rounded-none">
-      <CardHeader className="flex justify-between flex-row items-center">
-        <CardTitle className="font-medium text-base">
-          Pedido de resgate
-        </CardTitle>
+    <header className="flex justify-between items-center bg-primary text-primary-foreground lg:px-8 h-16">
+      <div className="relative h-[inherit] w-[70px]">
+        <Link href="/">
+          <Image src="/logo-white.png" alt="Logo" fill />
+        </Link>
+      </div>
 
-        <CardContent className="p-0">
-          <nav>
-            <ul className="flex gap-1">
-              <li>
-                <Link href="/" className="flex gap-1 items-center text-center text-primary rounded-md p-2 bg-primary-foreground">Início</Link>
-              </li>
+      <nav className="hidden lg:block">
+        <ul className="flex gap-1">
+          <li>
+            <Link
+              href="/"
+              className={`p-2 rounded-md ${path === '/' ? "bg-white text-primary" : "text-white"}`}
+            >
+              Solicitar resgate
+            </Link>
+          </li>
 
-              <li>
-                <Link href="/resgates" className="flex gap-1 items-center text-center text-primary rounded-md p-2 bg-primary-foreground">Resgates</Link>
-              </li>
-            </ul>
-          </nav>
-        </CardContent>
+          <li>
+            <Link
+              href="/r
+              sgates" className={`p-2 rounded-md ${path === '/resgates' ? "bg-white text-primary" : "text-white"}`}
+            >
+              Solicitações de resgate
+            </Link>
+          </li>
 
-        <CardDescription className="flex gap-4">
-          <Link href="tel:193" className="flex gap-1 items-center text-primary rounded-md p-2 bg-primary-foreground">
-            <PhoneIcon size={16} /> Bombeiros
-          </Link>
+          <li>
+            <Link
+              href="/a
+              rigos" className={`p-2 rounded-md ${path === '/abrigos' ? "bg-white text-primary" : "text-white"}`}
+            >
+              Abrigos
+            </Link>
+          </li>
 
-          <Link href="tel:199" className="flex gap-1 items-center text-center text-primary rounded-md p-2 bg-primary-foreground">
-            <PhoneIcon size={16} /> Defesa civil
-          </Link>
-        </CardDescription>
-      </CardHeader>
-    </Card>
+          <li>
+            <Link
+              href="/desaparecidos"
+              className={`p-2 rounded-md ${path === '/desaparecidos' ? "bg-white text-primary" : "text-white"}`}
+            >
+              Desaparecidos
+            </Link>
+          </li>
+        </ul>
+      </nav>
+    </header>
   )
 }
-
-export { Header }
