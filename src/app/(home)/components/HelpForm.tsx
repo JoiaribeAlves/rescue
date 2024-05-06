@@ -18,6 +18,7 @@ import { Button } from "../../../components/ui/button"
 import { createRescue } from "@/app/(home)/actions/createRescue"
 import { toast } from "sonner"
 import PhoneInput from "@/components/ui/phone-input"
+import { NumericFormat } from "react-number-format"
 
 const formSchema = z.object({
   street: z.string().min(1, "Nome da rua é obrigatório"),
@@ -25,7 +26,10 @@ const formSchema = z.object({
   district: z.string().min(1, "Bairro é obrigatório"),
   referencePoint: z.string().min(0),
   city: z.string().min(1, "Cidade é obrigatória"),
-  peopleNumber: z.string().min(1, "Número de pessoas é obrigatório"),
+  peopleNumber: z
+    .string()
+    .min(1, "Número de pessoas é obrigatório")
+    .regex(/^[1-9]\d*$/, "Digite apenas números"),
   note: z.string().min(0),
   phoneNumber: z
     .string()
@@ -176,8 +180,12 @@ export function HelpForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      type="text"
+                    <NumericFormat
+                      allowNegative={false} // Impede números negativos
+                      decimalScale={0} // Impede decimais
+                      thousandSeparator={false} // Não separa milhares
+                      defaultValue={""}
+                      customInput={Input}
                       placeholder="Quantidade de pessoas"
                       {...field}
                     />
