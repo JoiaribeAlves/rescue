@@ -3,17 +3,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
+import { MobileMenu } from "./MobileMenu";
+import { Button } from "./ui/button";
+import { MenuIcon } from "lucide-react";
 
 export function Header() {
   const path = usePathname();
 
   return (
-    <header className="flex justify-between items-center bg-primary text-primary-foreground lg:px-8 h-16">
-      <div className="relative h-[inherit] w-[70px]">
-        <Link href="/">
-          <Image src="/logo-white.png" alt="Logo" fill />
-        </Link>
-      </div>
+    <header className="flex justify-between items-center px-4 bg-primary text-primary-foreground lg:px-8 h-16">
+      <Link href="/" className="relative h-8 w-10 lg:h-16 lg:w-[70px]">
+        <Image src="/logo-white.png" alt="Logo" fill sizes="100%" />
+      </Link>
+
 
       <nav className="hidden lg:block">
         <ul className="flex gap-1">
@@ -54,6 +57,22 @@ export function Header() {
           </li>
         </ul>
       </nav>
+
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button variant="default" size="icon" className="lg:hidden">
+            <MenuIcon size={24} />
+          </Button>
+        </SheetTrigger>
+
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>Menu</SheetTitle>
+          </SheetHeader>
+
+          <MobileMenu />
+        </SheetContent>
+      </Sheet>
     </header>
   )
 }
