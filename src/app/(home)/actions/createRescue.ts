@@ -1,7 +1,9 @@
 "use server";
 
-import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { uglify } from "phone-fns";
+
+import { db } from "@/lib/db";
 
 interface ICreateRescue {
   street: string;
@@ -19,7 +21,7 @@ export async function createRescue(data: ICreateRescue) {
     const rescue = await db.rescue.create({
       data: {
         peopleQuantity: Number(data.peopleQuantity),
-        phoneNumber: data.phoneNumber,
+        phoneNumber: uglify(data.phoneNumber),
         note: data.note,
       }
     });
