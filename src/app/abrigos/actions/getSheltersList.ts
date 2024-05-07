@@ -1,13 +1,30 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { IShelter } from "@/interfaces";
 
-export async function getSheltersList(city: string) {
+export async function getSheltersList(cityName: string): Promise<IShelter[] | null> {
   try {
     const sheltersList = await db.shelter.findMany({
       where: {
         address: {
-          city,
+          city: {
+            contains: cityName,
+            mode: "insensitive",
+          },
+        },
+      },
+      select: {
+        name: true,
+        address: {
+          select: {
+            street: true,
+            number: true,
+            district: true,
+            referencePoint: true,
+            state: true,
+            city: true,
+          },
         },
       },
       orderBy: {
