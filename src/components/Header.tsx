@@ -49,6 +49,15 @@ export function Header() {
 
 					<li>
 						<Link
+							href="/agua"
+							className={`p-2 rounded-md ${path === "/agua" ? "bg-white text-primary" : "text-white"}`}
+						>
+							Água Potável
+						</Link>
+					</li>
+
+					<li>
+						<Link
 							href="/desaparecidos"
 							className={`p-2 rounded-md ${path === "/desaparecidos" ? "bg-white text-primary" : "text-white"}`}
 						>
