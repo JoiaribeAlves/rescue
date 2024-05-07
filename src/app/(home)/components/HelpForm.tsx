@@ -12,21 +12,31 @@ import {
 	FormControl,
 	FormMessage,
 } from "../../../components/ui/form";
+
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "../../../components/ui/input";
 import { Button } from "../../../components/ui/button";
 import { createRescue } from "@/app/(home)/actions/createRescue";
 import { toast } from "sonner";
+import { NumericFormat, PatternFormat } from "react-number-format";
 
 const formSchema = z.object({
 	street: z.string().min(1, "Nome da rua é obrigatório"),
 	number: z.string().min(1, "Número da casa é obrigatório"),
 	district: z.string().min(1, "Bairro é obrigatório"),
 	referencePoint: z.string().min(0),
-	phoneNumber: z.string().min(1, "Número de telefone é obrigatório"),
 	city: z.string().min(1, "Cidade é obrigatória"),
-	peopleQuantity: z.string().min(1, "Número de pessoas é obrigatório"),
+	peopleQuantity: z
+		.string()
+		.min(1, "Número de pessoas é obrigatório")
+		.regex(/^[1-9]\d*$/, "Digite apenas números"),
 	note: z.string().min(0),
+	phoneNumber: z
+		.string()
+		.min(1, "Número de telefone é obrigatório")
+		.max(15, "Você ultrapassou o limite de 15 caracteres")
+		.regex(/^\(\d{2}\) \d{5}-\d{4}$/, "Preencha todos os números")
+		.transform((str) => str.replace(/\D/g, "")),
 });
 
 export function HelpForm() {
@@ -138,17 +148,27 @@ export function HelpForm() {
 
 						<FormField
 							control={form.control}
+
 							name="phoneNumber"
-							render={({ field }) => (
+							render={({ field: { onChange, name, value,ref,onBlur }}) => (
 								<FormItem>
 									<FormControl>
-										<Input
-											type="text"
-											placeholder="Número de telefone"
-											{...field}
+										<PatternFormat
+											format="(##) #####-####"
+											getInputRef={ref}
+											onChange={onChange}
+											name={name}
+											value={value}
+											onBlur={onBlur}
+											autoComplete="tel-national"
+											defaultValue={""}
+											customInput={Input}
+											placeholder="(99) 99999-9999"
 										/>
+
 									</FormControl>
 									<FormMessage />
+
 								</FormItem>
 							)}
 						/>
@@ -179,13 +199,22 @@ export function HelpForm() {
 						<FormField
 							control={form.control}
 							name="peopleQuantity"
-							render={({ field }) => (
+							render={({ field: { onChange, name, value,ref,onBlur }}) => (
 								<FormItem>
 									<FormControl>
-										<Input
-											type="text"
+										<NumericFormat
+											onChange={onChange}
+											name={name}
+											value={value}
+											getInputRef={ref}
+											onBlur={onBlur}
+											allowNegative={false} // Impede números negativos
+											decimalScale={0} // Impede decimais
+											thousandSeparator={false} // Não separa milhares
+											defaultValue={""}
+											customInput={Input}
+											type="tel"
 											placeholder="Quantidade de pessoas"
-											{...field}
 										/>
 									</FormControl>
 									<FormMessage />

@@ -79,7 +79,7 @@ export function RequestList({ requestList }: IRequestList) {
 									<strong className="font-medium">Telefone: </strong>
 									<Link
 										href={`https://wa.me/55${request.phoneNumber}`}
-										className='text-sm opacity-75'
+										className='text-sm opacity-75 text-primary'
 									>
 										{phoneMask(request.phoneNumber)}
 									</Link>
