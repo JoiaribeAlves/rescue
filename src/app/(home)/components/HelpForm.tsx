@@ -12,43 +12,32 @@ import {
 	FormControl,
 	FormMessage,
 } from "../../../components/ui/form";
+
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "../../../components/ui/input";
 import { Button } from "../../../components/ui/button";
 import { createRescue } from "@/app/(home)/actions/createRescue";
 import { toast } from "sonner";
-  Form,
-  FormField,
-  FormItem,
-  FormControl,
-  FormMessage,
-} from "../../../components/ui/form"
-import { Textarea } from "@/components/ui/textarea"
-import { Input } from "../../../components/ui/input"
-import { Button } from "../../../components/ui/button"
-import { createRescue } from "@/app/(home)/actions/createRescue"
-import { toast } from "sonner"
-import PhoneInput from "@/components/ui/phone-input"
-import { NumericFormat } from "react-number-format"
+import { NumericFormat, PatternFormat } from "react-number-format";
 
 const formSchema = z.object({
-  street: z.string().min(1, "Nome da rua é obrigatório"),
-  number: z.string().min(1, "Número da casa é obrigatório"),
-  district: z.string().min(1, "Bairro é obrigatório"),
-  referencePoint: z.string().min(0),
-  city: z.string().min(1, "Cidade é obrigatória"),
-  peopleNumber: z
-    .string()
-    .min(1, "Número de pessoas é obrigatório")
-    .regex(/^[1-9]\d*$/, "Digite apenas números"),
-  note: z.string().min(0),
-  phoneNumber: z
-    .string()
-    .min(1, "Número de telefone é obrigatório")
-    .max(15, "Você ultrapassou o limite de 15 caracteres")
-    .regex(/^\(\d{2}\) \d{5}-\d{4}$/, "Preencha todos os números")
-    .transform((str) => str.replace(/\D/g, "")),
-})
+	street: z.string().min(1, "Nome da rua é obrigatório"),
+	number: z.string().min(1, "Número da casa é obrigatório"),
+	district: z.string().min(1, "Bairro é obrigatório"),
+	referencePoint: z.string().min(0),
+	city: z.string().min(1, "Cidade é obrigatória"),
+	peopleQuantity: z
+		.string()
+		.min(1, "Número de pessoas é obrigatório")
+		.regex(/^[1-9]\d*$/, "Digite apenas números"),
+	note: z.string().min(0),
+	phoneNumber: z
+		.string()
+		.min(1, "Número de telefone é obrigatório")
+		.max(15, "Você ultrapassou o limite de 15 caracteres")
+		.regex(/^\(\d{2}\) \d{5}-\d{4}$/, "Preencha todos os números")
+		.transform((str) => str.replace(/\D/g, "")),
+});
 
 export function HelpForm() {
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -65,8 +54,8 @@ export function HelpForm() {
 		},
 	});
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    const result = await createRescue(data)
+	const onSubmit = async (data: z.infer<typeof formSchema>) => {
+		const result = await createRescue(data);
 
 		if (result) {
 			form.reset();
@@ -157,18 +146,32 @@ export function HelpForm() {
 							)}
 						/>
 
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <PhoneInput {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+						<FormField
+							control={form.control}
+
+							name="phoneNumber"
+							render={({ field: { onChange, name, value,ref,onBlur }}) => (
+								<FormItem>
+									<FormControl>
+										<PatternFormat
+											format="(##) #####-####"
+											getInputRef={ref}
+											onChange={onChange}
+											name={name}
+											value={value}
+											onBlur={onBlur}
+											autoComplete="tel-national"
+											defaultValue={""}
+											customInput={Input}
+											placeholder="(99) 99999-9999"
+										/>
+
+									</FormControl>
+									<FormMessage />
+
+								</FormItem>
+							)}
+						/>
 
 						<FormField
 							control={form.control}
@@ -192,30 +195,34 @@ export function HelpForm() {
 				<div className="flex flex-col gap-2">
 					<h2 className="font-medium">Quantidade de pessoas</h2>
 
-          <fieldset>
-            <FormField
-              control={form.control}
-              name="peopleNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <NumericFormat
-                      allowNegative={false} // Impede números negativos
-                      decimalScale={0} // Impede decimais
-                      thousandSeparator={false} // Não separa milhares
-                      defaultValue={""}
-                      customInput={Input}
-                      type="tel"
-                      placeholder="Quantidade de pessoas"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </fieldset>
-        </div>
+					<fieldset>
+						<FormField
+							control={form.control}
+							name="peopleQuantity"
+							render={({ field: { onChange, name, value,ref,onBlur }}) => (
+								<FormItem>
+									<FormControl>
+										<NumericFormat
+											onChange={onChange}
+											name={name}
+											value={value}
+											getInputRef={ref}
+											onBlur={onBlur}
+											allowNegative={false} // Impede números negativos
+											decimalScale={0} // Impede decimais
+											thousandSeparator={false} // Não separa milhares
+											defaultValue={""}
+											customInput={Input}
+											type="tel"
+											placeholder="Quantidade de pessoas"
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</fieldset>
+				</div>
 
 				<div className="flex flex-col gap-2">
 					<h2 className="font-medium">Observações</h2>
