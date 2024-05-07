@@ -20,10 +20,6 @@ export const metadata: Metadata = {
 		"Rio Grande do Sul",
 		"Enchentes",
 	],
-	icons: [
-		{ rel: "icon", url: "./favicon.ico" },
-		{ rel: "apple-touch-icon", url: "./favicon.ico" }
-	],
 };
 
 const inter = Inter({ subsets: ["latin"] });
