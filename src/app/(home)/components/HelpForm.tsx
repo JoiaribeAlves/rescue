@@ -186,6 +186,7 @@ export function HelpForm() {
                       thousandSeparator={false} // Não separa milhares
                       defaultValue={""}
                       customInput={Input}
+                      type="tel"
                       placeholder="Quantidade de pessoas"
                       {...field}
                     />
