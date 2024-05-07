@@ -15,7 +15,7 @@ export default function Shelter() {
 
 			<p>
 				Ajude-me a atualizar esta lista, conhece um abrigo?{" "}
-				<Link href="https://wa.me/556993390705" className="font-medium">Envie o endereço aqui</Link>
+				<Link href="https://wa.me/556993390705" className="font-medium text-primary">Envie o endereço aqui</Link>
 			</p>
 
 			<SheltersList />
