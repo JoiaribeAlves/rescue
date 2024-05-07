@@ -1,9 +1,30 @@
 import { Inter } from "next/font/google";
+import type { Metadata } from "next";
 
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+
+export const metadata: Metadata = {
+	robots: "index,follow",
+	keywords: [
+		"Resgate",
+		"Desabrigados",
+		"Desastres",
+		"Ajuda",
+		"Abrigos",
+		"Recursos",
+		"vítimas",
+		"Solidariedade",
+		"Rio Grande do Sul",
+		"Enchentes",
+	],
+	icons: [
+		{ rel: "icon", url: "./favicon.ico" },
+		{ rel: "apple-touch-icon", url: "./favicon.ico" }
+	],
+};
 
 const inter = Inter({ subsets: ["latin"] });
 
