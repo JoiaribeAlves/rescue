@@ -26,6 +26,12 @@ export function Footer() {
 					</li>
 
 					<li>
+						<Link href="/agua" className="text-xs hover:underline">
+							Água Potável
+						</Link>
+					</li>
+
+					<li>
 						<Link href="/desaparecidos" className="text-xs hover:underline">
 							Desaparecidos
 						</Link>

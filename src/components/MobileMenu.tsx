@@ -47,6 +47,17 @@ export function MobileMenu() {
 				<li className="flex">
 					<SheetClose asChild>
 						<Link
+							href="/agua"
+							className={`w-full px-2 py-3 ${path === "/agua" ? "bg-white text-primary" : "text-white"}`}
+						>
+							Água Potável
+						</Link>
+					</SheetClose>
+				</li>
+
+				<li className="flex">
+					<SheetClose asChild>
+						<Link
 							href="/desaparecidos"
 							className={`w-full px-2 py-3 ${path === "/desaparecidos" ? "bg-white text-primary" : "text-white"}`}
 						>

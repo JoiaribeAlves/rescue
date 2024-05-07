@@ -26,6 +26,14 @@ model Shelter {
   updateddAt DateTime @updatedAt
 }
 
+model Water {
+  id         String   @id @default(uuid())
+  name       String
+  address    Address?
+  createdAt  DateTime @default(now())
+  updateddAt DateTime @updatedAt
+}
+
 model Address {
   id             String   @id @default(uuid())
   street         String
@@ -38,6 +46,8 @@ model Address {
   rescueId       String?  @unique
   shelter        Shelter? @relation(fields: [shelterId], references: [id])
   shelterId      String?  @unique
+  water          Water?   @relation(fields: [waterId], references: [id])
+  waterId        String?  @unique
   createdAt      DateTime @default(now())
   updateddAt     DateTime @updatedAt
 }
