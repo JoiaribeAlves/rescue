@@ -33,7 +33,7 @@ export default function RootLayout({
 		<html lang="pt-br">
 			<body className={inter.className}>
 				<Header />
-				<main className="grow">
+				<main className="grow flex flex-col flex-1">
 					{children}
 					<Toaster />
 				</main>
