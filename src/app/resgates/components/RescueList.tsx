@@ -84,11 +84,18 @@ export function RescueList({ rescueList }: IRescueList) {
 							className="p-3 rounded-md shadow-lg bg-white flex flex-col gap-3"
 						>
 							<div className="flex flex-col gap-2 grow">
+								<div>
+									<strong className="font-medium">Nome: </strong>
+									<p className="inline text-opacity-75 text-sm">
+										{request.contactName}
+									</p>
+								</div>
+
 								<div className="font-medium">
 									<strong className="font-medium">Telefone: </strong>
 									<Link
 										href={`https://wa.me/55${request.phoneNumber}`}
-										className='text-sm opacity-75 text-primary'
+										className="text-sm opacity-75 text-primary"
 									>
 										{phoneMask(request.phoneNumber)}
 									</Link>
@@ -96,18 +103,18 @@ export function RescueList({ rescueList }: IRescueList) {
 
 								<div>
 									<strong className="font-medium">Endereço:</strong>
-									<p className='text-sm opacity-75'>{request.address?.street}, {request.address?.number} - {request.address?.district}, {request.address?.city}, {request.address?.state}</p>
+									<p className="text-sm opacity-75">{request.address?.street}, {request.address?.number} - {request.address?.district}, {request.address?.city}, {request.address?.state}</p>
 								</div>
 
 								<div>
 									<strong className="font-medium">Quantidade de pessoas: </strong>
-									<p className='text-sm opacity-75 inline'>{request.peopleQuantity}</p>
+									<p className="text-sm opacity-75 inline">{request.peopleQuantity}</p>
 								</div>
 
 								{request.note && (
 									<div>
 										<strong className="font-medium">Observações:</strong>
-										<p className='text-sm opacity-75'>
+										<p className="text-sm opacity-75">
 											{request.note}
 										</p>
 									</div>
