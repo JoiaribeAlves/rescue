@@ -3,17 +3,41 @@
 import { db } from "@/lib/db";
 import { IShelter } from "@/interfaces";
 
-export async function getSheltersList(cityName: string): Promise<IShelter[] | null> {
-	try {
-		const sheltersList = await db.shelter.findMany({
-			where: {
-				address: {
-					city: {
-						contains: cityName,
-						mode: "insensitive",
-					},
+interface IGetSheltersList {
+	cityName: string;
+	district: string;
+}
+
+export async function getSheltersList(data: IGetSheltersList): Promise<IShelter[] | null> {
+	let whereCondition = {};
+
+	if (data.cityName && data.district.length) {
+		whereCondition = {
+			address: {
+				city: {
+					contains: data.cityName,
+					mode: "insensitive",
+				},
+				district: {
+					contains: data.district,
+					mode: "insensitive",
 				},
 			},
+		};
+	} else if (data.cityName.length) {
+		whereCondition = {
+			address: {
+				city: {
+					contains: data.cityName,
+					mode: "insensitive",
+				},
+			},
+		};
+	}
+
+	try {
+		const sheltersList = await db.shelter.findMany({
+			where: whereCondition,
 			select: {
 				name: true,
 				address: {
