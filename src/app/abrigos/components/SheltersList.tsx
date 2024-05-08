@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2Icon } from "lucide-react";
+import { FilterIcon, Loader2Icon } from "lucide-react";
 
 import { getSheltersList } from "../actions/getSheltersList";
 import { Input } from "@/components/ui/input";
@@ -21,6 +21,7 @@ import { IShelter } from "@/interfaces";
 
 const formSchema = z.object({
 	cityName: z.string().min(1, "Nome da cidade é obrigatório"),
+	district: z.string().min(0),
 });
 
 export function SheltersList() {
@@ -30,12 +31,14 @@ export function SheltersList() {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			cityName: "",
+			district: "",
 		},
 	});
 
-	const onSubmit = async ({ cityName }: z.infer<typeof formSchema>) => {
-		const shelters = await getSheltersList(cityName);
+	const onSubmit = async (data: z.infer<typeof formSchema>) => {
+		console.log(data);
+
+		const shelters = await getSheltersList(data);
 
 		if (!shelters) return null;
 
@@ -47,10 +50,16 @@ export function SheltersList() {
 	};
 
 	return (
-		<>
+		<div className="flex flex-col gap-2 bg-muted p-3 rounded-md">
+			<div className="flex items-center gap-1">
+				<FilterIcon size={16} />
+
+				<h2 className="font-semibold text-sm">Filtros</h2>
+			</div>
+
 			<Form {...form}>
 				<form
-					className="bg-muted flex flex-col gap-4 lg:flex-row rounded-md p-3"
+					className="flex flex-col gap-4 lg:flex-row"
 					onSubmit={form.handleSubmit(onSubmit)}
 				>
 					<FormField
@@ -61,7 +70,24 @@ export function SheltersList() {
 								<FormControl>
 									<Input
 										type="text"
-										placeholder="Pesquise abrigos na sua cidade"
+										placeholder="Nome da sua cidade"
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage className="text-xs" />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name="district"
+						render={({ field }) => (
+							<FormItem className="grow">
+								<FormControl>
+									<Input
+										type="text"
+										placeholder="Nome do bairro (deixe em branco para mostrar todos)"
 										{...field}
 									/>
 								</FormControl>
@@ -98,6 +124,6 @@ export function SheltersList() {
 					<ShelterItem shelters={shelters} />
 				</ul>
 			)}
-		</>
+		</div>
 	);
 }
