@@ -13,7 +13,7 @@ model Rescue {
   phoneNumber    String
   note           String?
   accomplished   Boolean  @default(false)
-  addresses      Address?
+  address        Address?
   createdAt      DateTime @default(now())
   updateddAt     DateTime @updatedAt
 }

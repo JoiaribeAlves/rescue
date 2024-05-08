@@ -9,24 +9,24 @@ import { Input } from "@/components/ui/input";
 import { CompleteRescueButton } from "./CompleteRescueButton";
 import { FilterIcon } from "lucide-react";
 
-interface IRequestList {
-	requestList: Prisma.RescueGetPayload<{
+interface IRescueList {
+	rescueList: Prisma.RescueGetPayload<{
 		include: {
-			addresses: true,
+			address: true,
 		}
 	}>[];
 }
 
-export function RequestList({ requestList }: IRequestList) {
+export function RescueList({ rescueList }: IRescueList) {
 	const [cityFilter, setCityFilter] = useState("");
 	const [streetFilter, setStreetFilter] = useState("");
 	const [districtFilter, setDistrictFilter] = useState("");
 
-	const filteredList = requestList.filter(request => {
+	const filteredList = rescueList.filter(request => {
 		return (
-			(cityFilter === "" || request.addresses?.city.toLowerCase().includes(cityFilter.toLowerCase())) &&
-			(streetFilter === "" || request.addresses?.street.toLowerCase().includes(streetFilter.toLowerCase())) &&
-			(districtFilter === "" || request.addresses?.district.toLowerCase().includes(districtFilter.toLowerCase()))
+			(cityFilter === "" || request.address?.city.toLowerCase().includes(cityFilter.toLowerCase())) &&
+			(streetFilter === "" || request.address?.street.toLowerCase().includes(streetFilter.toLowerCase())) &&
+			(districtFilter === "" || request.address?.district.toLowerCase().includes(districtFilter.toLowerCase()))
 		);
 	});
 
@@ -96,7 +96,7 @@ export function RequestList({ requestList }: IRequestList) {
 
 								<div>
 									<strong className="font-medium">Endereço:</strong>
-									<p className='text-sm opacity-75'>{request.addresses?.street}, {request.addresses?.number} - {request.addresses?.district}, {request.addresses?.city}, {request.addresses?.state}</p>
+									<p className='text-sm opacity-75'>{request.address?.street}, {request.address?.number} - {request.address?.district}, {request.address?.city}, {request.address?.state}</p>
 								</div>
 
 								<div>

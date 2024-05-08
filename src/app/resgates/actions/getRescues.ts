@@ -2,14 +2,14 @@
 
 import { db } from "@/lib/db";
 
-export async function getRequests() {
+export async function getRescues() {
 	try {
 		const requests = await db.rescue.findMany({
 			where: {
 				accomplished: false,
 			},
 			include: {
-				addresses: true,
+				address: true,
 			},
 			orderBy: {
 				createdAt: "desc",
