@@ -9,8 +9,9 @@ datasource db {
 
 model Rescue {
   id             String   @id @default(uuid())
-  peopleQuantity Int
+  contactName    String   @default("Vítima")
   phoneNumber    String
+  peopleQuantity Int
   note           String?
   accomplished   Boolean  @default(false)
   address        Address?
