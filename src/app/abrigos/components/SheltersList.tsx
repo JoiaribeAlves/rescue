@@ -51,7 +51,7 @@ export function SheltersList() {
 	};
 
 	return (
-		<div className="flex flex-col gap-2 bg-muted p-3 rounded-md">
+		<div className="flex flex-col gap-4 bg-muted p-3 rounded-md">
 			<div className="flex items-center gap-1">
 				<FilterIcon size={16} />
 
