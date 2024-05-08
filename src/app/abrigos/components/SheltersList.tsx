@@ -51,80 +51,86 @@ export function SheltersList() {
 	};
 
 	return (
-		<div className="flex flex-col gap-4 bg-muted p-3 rounded-md">
-			<div className="flex items-center gap-1">
-				<FilterIcon size={16} />
+		<>
+			<div className="flex flex-col gap-3 bg-muted p-3 rounded-md">
+				<div className="flex items-center gap-1">
+					<FilterIcon size={16} />
 
-				<h2 className="font-semibold text-sm">Filtros</h2>
+					<h2 className="font-semibold text-sm">Filtros</h2>
+				</div>
+
+				<Form {...form}>
+					<form
+						className="bg-muted flex flex-col gap-3 lg:flex-row"
+						onSubmit={form.handleSubmit(onSubmit)}
+					>
+						<FormField
+							control={form.control}
+							name="cityName"
+							render={({ field }) => (
+								<FormItem className="grow">
+									<FormControl>
+										<Input
+											type="text"
+											placeholder="Pesquise abrigos na sua cidade"
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage className="text-xs" />
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							control={form.control}
+							name="district"
+							render={({ field }) => (
+								<FormItem className="grow">
+									<FormControl>
+										<Input
+											type="text"
+											placeholder="Nome do bairro (deixe em branco para mostrar todos)"
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage className="text-xs" />
+								</FormItem>
+							)}
+						/>
+
+						<Button
+							type="submit"
+							disabled={form.formState.isSubmitting}
+							className="w-full lg:w-[140px] h-fit"
+						>
+							{form.formState.isSubmitting ? (
+								<>
+									<Loader2Icon className="h-4 w-4 mr-1 animate-spin" />
+									Pesquisando
+								</>
+							) : (
+								<>
+									Pesquisar
+								</>
+							)}
+						</Button>
+					</form>
+				</Form>
 			</div>
 
-			<Form {...form}>
-				<form
-					className="bg-muted flex flex-col gap-4 lg:flex-row"
-					onSubmit={form.handleSubmit(onSubmit)}
-				>
-					<FormField
-						control={form.control}
-						name="cityName"
-						render={({ field }) => (
-							<FormItem className="grow">
-								<FormControl>
-									<Input
-										type="text"
-										placeholder="Pesquise abrigos na sua cidade"
-										{...field}
-									/>
-								</FormControl>
-								<FormMessage className="text-xs" />
-							</FormItem>
-						)}
-					/>
-
-					<FormField
-						control={form.control}
-						name="district"
-						render={({ field }) => (
-							<FormItem className="grow">
-								<FormControl>
-									<Input
-										type="text"
-										placeholder="Nome do bairro (deixe em branco para mostrar todos)"
-										{...field}
-									/>
-								</FormControl>
-								<FormMessage className="text-xs" />
-							</FormItem>
-						)}
-					/>
-
-					<Button
-						type="submit"
-						disabled={form.formState.isSubmitting}
-						className="w-full lg:w-[140px] h-fit"
-					>
-						{form.formState.isSubmitting ? (
-							<>
-								<Loader2Icon className="h-4 w-4 mr-1 animate-spin" />
-								Pesquisando
-							</>
-						) : (
-							<>
-								Pesquisar
-							</>
-						)}
-					</Button>
-				</form>
-			</Form>
-
-			{notFound ? (
-				<h2 className="font-semibold text-sm opacity-75">
-					Nenhum abrigo foi encontrado
-				</h2>
-			) : (
-				<ul className="grid gap-4 grid-cols-1 lg:grid-cols-4">
-					<ShelterItem shelters={shelters} />
-				</ul>
-			)}
-		</div>
+			<>
+				{
+					notFound ? (
+						<h2 className="font-semibold text-sm opacity-75">
+							Nenhum abrigo foi encontrado
+						</h2>
+					) : (
+						<ul className="grid gap-4 grid-cols-1 lg:grid-cols-4">
+							<ShelterItem shelters={shelters} />
+						</ul>
+					)
+				}
+			</>
+		</>
 	);
 }

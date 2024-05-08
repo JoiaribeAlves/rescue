@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 
-import { WaterList } from "./components/WaterList";
 import Link from "next/link";
+
 import { PHONES } from "@/constants/phones";
+import { WaterList } from "./components/WaterList";
 
 export const metadata: Metadata = {
 	title: "Lista de locais com água potável - Enchentes RS",

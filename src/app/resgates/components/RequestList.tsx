@@ -7,6 +7,7 @@ import { Prisma } from "@prisma/client";
 import { phoneMask } from "@/helpers/phoneMask";
 import { Input } from "@/components/ui/input";
 import { CompleteRescueButton } from "./CompleteRescueButton";
+import { FilterIcon } from "lucide-react";
 
 interface IRequestList {
 	requestList: Prisma.RescueGetPayload<{
@@ -31,35 +32,43 @@ export function RequestList({ requestList }: IRequestList) {
 
 	return (
 		<>
-			<div className="flex flex-col lg:flex-row gap-4 mb-3 bg-muted p-3 rounded-md">
-				<div className="grow">
-					<Input
-						type="text"
-						placeholder="Filtrar por Cidade"
-						className="p-3 outline-none rounded-md"
-						value={cityFilter}
-						onChange={(e) => setCityFilter(e.target.value)}
-					/>
+			<div className="flex flex-col gap-3 bg-muted p-3 rounded-md">
+				<div className="flex items-center gap-1">
+					<FilterIcon size={16} />
+
+					<h2 className="font-semibold text-sm">Filtros</h2>
 				</div>
 
-				<div className="grow">
-					<Input
-						type="text"
-						placeholder="Filtrar por Rua"
-						className="p-3 outline-none rounded-md grow"
-						value={streetFilter}
-						onChange={(e) => setStreetFilter(e.target.value)}
-					/>
-				</div>
+				<div className="bg-muted flex flex-col gap-3 lg:flex-row">
+					<div className="grow">
+						<Input
+							type="text"
+							placeholder="Filtrar por Cidade"
+							className="p-3 outline-none rounded-md"
+							value={cityFilter}
+							onChange={(e) => setCityFilter(e.target.value)}
+						/>
+					</div>
 
-				<div className="grow">
-					<Input
-						type="text"
-						placeholder="Filtrar por Bairro"
-						className="p-3 outline-none rounded-md grow"
-						value={districtFilter}
-						onChange={(e) => setDistrictFilter(e.target.value)}
-					/>
+					<div className="grow">
+						<Input
+							type="text"
+							placeholder="Filtrar por Rua"
+							className="p-3 outline-none rounded-md grow"
+							value={streetFilter}
+							onChange={(e) => setStreetFilter(e.target.value)}
+						/>
+					</div>
+
+					<div className="grow">
+						<Input
+							type="text"
+							placeholder="Filtrar por Bairro"
+							className="p-3 outline-none rounded-md grow"
+							value={districtFilter}
+							onChange={(e) => setDistrictFilter(e.target.value)}
+						/>
+					</div>
 				</div>
 			</div>
 
@@ -68,7 +77,7 @@ export function RequestList({ requestList }: IRequestList) {
 					Sua busca não retornou dados
 				</h2>
 			) : (
-				<ul className="grid gap-4 grid-cols-1 lg:grid-cols-4">
+				<ul className="grid gap-3 grid-cols-1 lg:grid-cols-4">
 					{filteredList.map(request => (
 						<li
 							key={request.id}
