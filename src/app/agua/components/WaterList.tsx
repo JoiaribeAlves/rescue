@@ -21,6 +21,7 @@ import { IWater } from "@/interfaces";
 
 const formSchema = z.object({
 	cityName: z.string().min(1, "Nome da cidade é obrigatório"),
+	district: z.string().min(0),
 });
 
 export function WaterList() {
@@ -31,11 +32,12 @@ export function WaterList() {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			cityName: "",
+			district: "",
 		},
 	});
 
-	const onSubmit = async ({ cityName }: z.infer<typeof formSchema>) => {
-		const water = await getWaterList(cityName);
+	const onSubmit = async (data: z.infer<typeof formSchema>) => {
+		const water = await getWaterList(data);
 
 		if (!water) return null;
 
@@ -71,6 +73,23 @@ export function WaterList() {
 										<Input
 											type="text"
 											placeholder="Pesquise locais com água potável na sua cidade"
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage className="text-xs" />
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							control={form.control}
+							name="district"
+							render={({ field }) => (
+								<FormItem className="grow">
+									<FormControl>
+										<Input
+											type="text"
+											placeholder="Nome do bairro (deixe em branco para mostrar todos)"
 											{...field}
 										/>
 									</FormControl>

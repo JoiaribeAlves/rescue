@@ -3,17 +3,41 @@
 import { db } from "@/lib/db";
 import { IWater } from "@/interfaces";
 
-export async function getWaterList(cityName: string): Promise<IWater[] | null> {
-	try {
-		const watersList = await db.water.findMany({
-			where: {
-				address: {
-					city: {
-						contains: cityName,
-						mode: "insensitive",
-					},
+interface IGetWaterList {
+	cityName: string;
+	district: string;
+}
+
+export async function getWaterList(data: IGetWaterList): Promise<IWater[] | null> {
+	let whereCondition = {};
+
+	if (data.cityName && data.district.length) {
+		whereCondition = {
+			address: {
+				city: {
+					contains: data.cityName,
+					mode: "insensitive",
+				},
+				district: {
+					contains: data.district,
+					mode: "insensitive",
 				},
 			},
+		};
+	} else if (data.cityName.length) {
+		whereCondition = {
+			address: {
+				city: {
+					contains: data.cityName,
+					mode: "insensitive",
+				},
+			},
+		};
+	}
+
+	try {
+		const watersList = await db.water.findMany({
+			where: whereCondition,
 			select: {
 				name: true,
 				address: {
