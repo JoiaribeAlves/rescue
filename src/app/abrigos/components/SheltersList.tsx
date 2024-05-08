@@ -60,7 +60,7 @@ export function SheltersList() {
 
 			<Form {...form}>
 				<form
-					className="bg-muted flex flex-col gap-4 lg:flex-row rounded-md p-3"
+					className="bg-muted flex flex-col gap-4 lg:flex-row"
 					onSubmit={form.handleSubmit(onSubmit)}
 				>
 					<FormField
