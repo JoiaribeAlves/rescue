@@ -1,30 +1,28 @@
-"use client"; // Error components must be Client Components
+"use client";
 
 import { useEffect } from "react";
 
-export default function Error({
-	error,
-	reset,
-}: {
-  error: Error & { digest?: string }
-  reset: () => void
-}) {
+import { Button } from "@/components/ui/button";
+
+interface IError {
+	error: Error & { digest?: string }
+	reset: () => void
+}
+
+export default function Error({ error, reset, }: IError) {
 	useEffect(() => {
-		// Log the error to an error reporting service
 		console.error(error);
 	}, [error]);
 
 	return (
 		<div>
-			<h2>Something went wrong!</h2>
-			<button
-				onClick={
-					// Attempt to recover by trying to re-render the segment
-					() => reset()
-				}
+			<h2 className="opacity-75 text-lg">Algo deu errado!</h2>
+
+			<Button
+				onClick={() => reset()}
 			>
-        Try again
-			</button>
+				Tentar novamente
+			</Button>
 		</div>
 	);
 }
