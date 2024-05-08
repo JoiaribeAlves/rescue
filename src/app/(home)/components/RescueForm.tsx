@@ -20,36 +20,53 @@ import { createRescue } from "@/app/(home)/actions/createRescue";
 import { toast } from "sonner";
 import { NumericFormat, PatternFormat } from "react-number-format";
 
+const regex = {
+	onlyAllowsNumbers: /^\(\d{2}\) \d{5}-\d{4}$/,
+	onlyNumbers: /\D/g,
+	integerPositive: /^[1-9]\d*$/,
+};
+
 const formSchema = z.object({
-	street: z.string().min(1, "Nome da rua é obrigatório"),
-	number: z.string().min(1, "Número da casa é obrigatório"),
-	district: z.string().min(1, "Bairro é obrigatório"),
-	referencePoint: z.string().min(0),
-	city: z.string().min(1, "Cidade é obrigatória"),
+	contactInfo: z.object({
+		name: z.string().min(1, "Nome do contato é obrigatório"),
+		phoneNumber: z
+			.string()
+			.length(15, "Número de telefone inválido")
+			.regex(regex.onlyAllowsNumbers, "Número de telefone inválido")
+			.transform((str) => str.replace(regex.onlyNumbers, "")),
+	}),
 	peopleQuantity: z
 		.string()
 		.min(1, "Número de pessoas é obrigatório")
-		.regex(/^[1-9]\d*$/, "Digite apenas números"),
+		.regex(regex.integerPositive, "Digite apenas números"),
+	address: z.object({
+		street: z.string().min(1, "Nome da rua é obrigatório"),
+		number: z.string().min(1, "Número da casa é obrigatório"),
+		district: z.string().min(1, "Bairro é obrigatório"),
+		referencePoint: z.string().min(0),
+		state: z.string().length(2, "Informe apenas a UF"),
+		city: z.string().min(1, "Cidade é obrigatória"),
+	}),
 	note: z.string().min(0),
-	phoneNumber: z
-		.string()
-		.min(1, "Número de telefone é obrigatório")
-		.max(15, "Você ultrapassou o limite de 15 caracteres")
-		.regex(/^\(\d{2}\) \d{5}-\d{4}$/, "Preencha todos os números")
-		.transform((str) => str.replace(/\D/g, "")),
 });
 
-export function HelpForm() {
+export function RescueForm() {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			street: "",
-			number: "",
-			district: "",
-			referencePoint: "",
-			phoneNumber: "",
-			city: "",
+			contactInfo: {
+				name: "",
+				phoneNumber: "",
+			},
 			peopleQuantity: "",
+			address: {
+				street: "",
+				number: "",
+				district: "",
+				referencePoint: "",
+				state: "RS",
+				city: "",
+			},
 			note: "",
 		},
 	});
@@ -79,12 +96,85 @@ export function HelpForm() {
 				className="bg-muted flex flex-col gap-6 rounded-lg p-3"
 			>
 				<div className="flex flex-col gap-2">
-					<h2 className="font-medium">Endereço de resgate</h2>
+					<h2 className="font-medium">Informações do contato</h2>
+
+					<fieldset className="grid grid-cols-1 gap-3 lg:grid-cols-3">
+						<FormField
+							control={form.control}
+							name="contactInfo.name"
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Input
+											type="text"
+											placeholder="Nome do contato"
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							control={form.control}
+							name="contactInfo.phoneNumber"
+							render={({ field: { onChange, name, value, ref, onBlur } }) => (
+								<FormItem>
+									<FormControl>
+										<PatternFormat
+											format="(##) #####-####"
+											getInputRef={ref}
+											onChange={onChange}
+											name={name}
+											value={value}
+											onBlur={onBlur}
+											autoComplete="tel-national"
+											defaultValue={""}
+											customInput={Input}
+											placeholder="(99) 99999-9999"
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							control={form.control}
+							name="peopleQuantity"
+							render={({ field: { onChange, name, value, ref, onBlur } }) => (
+								<FormItem>
+									<FormControl>
+										<NumericFormat
+											onChange={onChange}
+											name={name}
+											value={value}
+											getInputRef={ref}
+											onBlur={onBlur}
+											allowNegative={false}
+											decimalScale={0}
+											thousandSeparator={false}
+											defaultValue={""}
+											customInput={Input}
+											type="tel"
+											placeholder="Quantidade de pessoas"
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</fieldset>
+				</div>
+
+				<div className="flex flex-col gap-2">
+					<h2 className="font-medium">Endereço para resgate</h2>
 
 					<fieldset className="grid grid-cols-1 gap-3 lg:grid-cols-2">
 						<FormField
 							control={form.control}
-							name="street"
+							name="address.street"
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
@@ -101,7 +191,7 @@ export function HelpForm() {
 
 						<FormField
 							control={form.control}
-							name="number"
+							name="address.number"
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
@@ -118,7 +208,7 @@ export function HelpForm() {
 
 						<FormField
 							control={form.control}
-							name="district"
+							name="address.district"
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
@@ -131,7 +221,7 @@ export function HelpForm() {
 
 						<FormField
 							control={form.control}
-							name="referencePoint"
+							name="address.referencePoint"
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
@@ -148,40 +238,14 @@ export function HelpForm() {
 
 						<FormField
 							control={form.control}
-
-							name="phoneNumber"
-							render={({ field: { onChange, name, value,ref,onBlur }}) => (
-								<FormItem>
-									<FormControl>
-										<PatternFormat
-											format="(##) #####-####"
-											getInputRef={ref}
-											onChange={onChange}
-											name={name}
-											value={value}
-											onBlur={onBlur}
-											autoComplete="tel-national"
-											defaultValue={""}
-											customInput={Input}
-											placeholder="(99) 99999-9999"
-										/>
-
-									</FormControl>
-									<FormMessage />
-
-								</FormItem>
-							)}
-						/>
-
-						<FormField
-							control={form.control}
-							name="city"
+							name="address.state"
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
 										<Input
 											type="text"
-											placeholder="Cidade"
+											placeholder="Estado"
+											maxLength={2}
 											{...field}
 										/>
 									</FormControl>
@@ -189,32 +253,17 @@ export function HelpForm() {
 								</FormItem>
 							)}
 						/>
-					</fieldset>
-				</div>
 
-				<div className="flex flex-col gap-2">
-					<h2 className="font-medium">Quantidade de pessoas</h2>
-
-					<fieldset>
 						<FormField
 							control={form.control}
-							name="peopleQuantity"
-							render={({ field: { onChange, name, value,ref,onBlur }}) => (
+							name="address.city"
+							render={({ field }) => (
 								<FormItem>
 									<FormControl>
-										<NumericFormat
-											onChange={onChange}
-											name={name}
-											value={value}
-											getInputRef={ref}
-											onBlur={onBlur}
-											allowNegative={false} // Impede números negativos
-											decimalScale={0} // Impede decimais
-											thousandSeparator={false} // Não separa milhares
-											defaultValue={""}
-											customInput={Input}
-											type="tel"
-											placeholder="Quantidade de pessoas"
+										<Input
+											type="text"
+											placeholder="Cidade"
+											{...field}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -236,7 +285,8 @@ export function HelpForm() {
 									<FormControl>
 										<Textarea
 											placeholder="Digite uma observação (se houver)"
-											className='h-[200px] resize-none'
+											className="h-[200px] resize-none"
+											maxLength={500}
 											{...field}
 										/>
 									</FormControl>
