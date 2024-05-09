@@ -2,7 +2,7 @@
 
 export function shelterType(type: string) {
 	switch (type) {
-		case "Human":
+		case "People":
 			return "Abrigo para pessoas";
 
 		case "Pets":
