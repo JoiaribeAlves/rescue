@@ -3,12 +3,12 @@
 export function shelterType(type: string) {
 	switch (type) {
 		case "Human":
-			return "Aceita somente pessoas";
+			return "Abrigo para pessoas";
 
 		case "Pets":
-			return "Aceita somente animais";
+			return "Abrigo para animais";
 
 		default:
-			return "Aceita pessoas e animais";
+			return "Abrigo para pessoas e animais";
 	}
 }
