@@ -1,0 +1,6 @@
+User-agent: *
+
+Disallow: /abrigos/novo/
+Disallow: /agua/novo/
+
+Sitemap: https://desabrigados.com.br/sitemap.xml
