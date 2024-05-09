@@ -39,6 +39,7 @@ export async function getSheltersList(data: IGetSheltersList): Promise<IShelter[
 		const sheltersList = await db.shelter.findMany({
 			where: whereCondition,
 			select: {
+				id: true,
 				name: true,
 				type: true,
 				address: {

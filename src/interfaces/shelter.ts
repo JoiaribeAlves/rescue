@@ -1,4 +1,5 @@
 export interface IShelter {
+	id: string;
 	name: string;
 	type: string;
 	address: {
