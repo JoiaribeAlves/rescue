@@ -20,19 +20,13 @@ model Rescue {
 }
 
 model Shelter {
-  id         String      @id @default(uuid())
+  id         String   @id @default(uuid())
   name       String
-  type       ShelterType @default(Human)
+  type       String   @default("People")
   imageUrl   String?
   address    Address?
-  createdAt  DateTime    @default(now())
-  updateddAt DateTime    @updatedAt
-}
-
-enum ShelterType {
-  Human
-  Pets
-  Hybrid
+  createdAt  DateTime @default(now())
+  updateddAt DateTime @updatedAt
 }
 
 model Water {
