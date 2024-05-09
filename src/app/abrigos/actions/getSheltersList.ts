@@ -40,6 +40,7 @@ export async function getSheltersList(data: IGetSheltersList): Promise<IShelter[
 			where: whereCondition,
 			select: {
 				name: true,
+				type: true,
 				address: {
 					select: {
 						street: true,
