@@ -42,7 +42,7 @@ export function CreateShelterForm() {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			name: "",
-			type: "",
+			type: "People",
 			address: {
 				street: "",
 				number: "",
@@ -120,7 +120,7 @@ export function CreateShelterForm() {
 											</FormControl>
 
 											<SelectContent>
-												<SelectItem value="Human">
+												<SelectItem value="People">
 													Somente Pessoas
 												</SelectItem>
 												<SelectItem value="Pets">
