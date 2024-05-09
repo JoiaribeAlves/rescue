@@ -5,6 +5,7 @@ import { IAddress } from "@/interfaces/address";
 
 interface ICreateShelter {
 	name: string;
+	type: string;
 	address: IAddress;
 }
 
@@ -13,6 +14,7 @@ export async function createShelter(data: ICreateShelter) {
 		const shelter = await db.shelter.create({
 			data: {
 				name: data.name,
+				type: data.type,
 			},
 		});
 

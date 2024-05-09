@@ -14,11 +14,19 @@ import {
 	FormControl,
 	FormMessage,
 } from "@/components/ui/form";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
-	name: z.string().min(1, "Nome do abrigo é obrigatório"),
+	name: z.string().trim().min(1, "Nome do abrigo é obrigatório"),
+	type: z.string().min(1, "Escolha uma opção"),
 	address: z.object({
 		street: z.string().min(1, "Nome da rua/avenida é obrigatória"),
 		number: z.string().min(1, "Número é obrigatório"),
@@ -34,6 +42,7 @@ export function CreateShelterForm() {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			name: "",
+			type: "",
 			address: {
 				street: "",
 				number: "",
@@ -69,28 +78,65 @@ export function CreateShelterForm() {
 				onSubmit={form.handleSubmit(onSubmit)}
 				className="bg-muted flex flex-col gap-6 rounded-lg p-3"
 			>
-				<div className="flex flex-col gap-2">
-					<h2 className="font-medium">Nome do abrigo</h2>
+				<div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+					<div className="flex flex-col grow gap-2">
+						<h2 className="font-medium">Nome do abrigo</h2>
 
-					<fieldset>
-						<FormField
-							control={form.control}
-							name="name"
-							render={({ field }) => (
-								<FormItem>
-									<FormControl>
-										<Input
-											type="text"
-											placeholder="Ex: Ginásio poliesportivo"
-											className="capitalize"
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-					</fieldset>
+						<fieldset>
+							<FormField
+								control={form.control}
+								name="name"
+								render={({ field }) => (
+									<FormItem>
+										<FormControl>
+											<Input
+												type="text"
+												placeholder="Ex: Ginásio poliesportivo"
+												className="capitalize"
+												{...field}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</fieldset>
+					</div>
+
+					<div className="flex flex-col grow gap-2">
+						<h2 className="font-medium">O que este abrigo aceita?</h2>
+
+						<fieldset>
+							<FormField
+								control={form.control}
+								name="type"
+								render={({ field }) => (
+									<FormItem>
+										<Select onValueChange={field.onChange} defaultValue={field.value}>
+											<FormControl>
+												<SelectTrigger>
+													<SelectValue placeholder="Selecione uma opção" />
+												</SelectTrigger>
+											</FormControl>
+
+											<SelectContent>
+												<SelectItem value="Human">
+													Somente Pessoas
+												</SelectItem>
+												<SelectItem value="Pets">
+													Somente Animais de Estimação
+												</SelectItem>
+												<SelectItem value="Hybrid">
+													Pessoas e Animais de Estimação
+												</SelectItem>
+											</SelectContent>
+										</Select>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</fieldset>
+					</div>
 				</div>
 
 				<div className="flex flex-col gap-2">
@@ -122,7 +168,7 @@ export function CreateShelterForm() {
 								<FormItem>
 									<FormControl>
 										<Input
-											type="number"
+											type="text"
 											placeholder="Número"
 											{...field}
 										/>
