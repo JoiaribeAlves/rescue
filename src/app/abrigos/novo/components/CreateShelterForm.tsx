@@ -26,14 +26,14 @@ import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
 	name: z.string().trim().min(1, "Nome do abrigo é obrigatório"),
-	type: z.string().min(1, "Escolha uma opção"),
+	type: z.string().trim().min(1, "Escolha uma opção"),
 	address: z.object({
-		street: z.string().min(1, "Nome da rua/avenida é obrigatória"),
-		number: z.string().min(1, "Número é obrigatório"),
-		district: z.string().min(1, "Bairro é obrigatório"),
-		referencePoint: z.string().min(0),
-		city: z.string().min(1, "Cidade é obrigatória"),
-		state: z.string().length(2, "Informe apenas a UF"),
+		street: z.string().trim().min(1, "Nome da rua/avenida é obrigatória"),
+		number: z.string().trim().min(1, "Número é obrigatório"),
+		district: z.string().trim().min(1, "Bairro é obrigatório"),
+		referencePoint: z.string().trim().min(0),
+		city: z.string().trim().min(1, "Cidade é obrigatória"),
+		state: z.string().trim().length(2, "Informe apenas a UF"),
 	})
 });
 
