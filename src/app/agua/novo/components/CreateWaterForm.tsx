@@ -20,12 +20,19 @@ import { Button } from "@/components/ui/button";
 const formSchema = z.object({
 	name: z.string().min(1, "Nome do abrigo é obrigatório"),
 	address: z.object({
-		street: z.string().min(1, "Nome da rua/avenida é obrigatória"),
-		number: z.string().min(1, "Número é obrigatório"),
-		district: z.string().min(1, "Bairro é obrigatório"),
-		referencePoint: z.string().min(0),
-		city: z.string().min(1, "Cidade é obrigatória"),
-		state: z.string().length(2, "Informe apenas a UF"),
+		zipCode: z.string().trim().min(0),
+		street: z
+			.string().trim().min(1, "Nome da rua/avenida é obrigatória"),
+		number: z
+			.string().trim().min(1, "Número é obrigatório"),
+		district: z
+			.string().trim().min(1, "Bairro é obrigatório"),
+		referencePoint: z.string().trim().min(0),
+		city: z
+			.string().trim().min(1, "Cidade é obrigatória"),
+		state: z
+			.string().trim().toUpperCase().length(2, "Informe apenas a UF"),
+		mapUrl: z.string().trim().min(0),
 	})
 });
 
@@ -35,12 +42,14 @@ export function CreateWaterForm() {
 		defaultValues: {
 			name: "",
 			address: {
+				zipCode: "",
 				street: "",
 				number: "",
 				district: "",
 				referencePoint: "",
 				state: "RS",
 				city: "",
+				mapUrl: "",
 			}
 		},
 	});
@@ -93,113 +102,132 @@ export function CreateWaterForm() {
 					</fieldset>
 				</div>
 
-				<div className="flex flex-col gap-2">
-					<h2 className="font-medium">Endereço</h2>
+				<fieldset className="pt-2 grid grid-cols-1 gap-3 lg:grid-cols-3">
+					<legend className="font-medium">Endereço do local</legend>
 
-					<fieldset className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-						<FormField
-							control={form.control}
-							name="address.street"
-							render={({ field }) => (
-								<FormItem>
-									<FormControl>
-										<Input
-											type="text"
-											placeholder="Nome da rua/avenida"
-											className="capitalize"
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+					<FormField
+						control={form.control}
+						name="address.zipCode"
+						render={({ field }) => (
+							<FormItem>
+								<FormControl>
+									<Input
+										type="text"
+										maxLength={8}
+										disabled
+										placeholder="CEP (apenas números)"
+										inputMode="numeric"
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-						<FormField
-							control={form.control}
-							name="address.number"
-							render={({ field }) => (
-								<FormItem>
-									<FormControl>
-										<Input
-											type="number"
-											placeholder="Número"
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+					<FormField
+						control={form.control}
+						name="address.street"
+						render={({ field }) => (
+							<FormItem>
+								<FormControl>
+									<Input
+										type="text"
+										placeholder="Nome da rua/avenida"
+										className="capitalize"
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-						<FormField
-							control={form.control}
-							name="address.district"
-							render={({ field }) => (
-								<FormItem>
-									<FormControl>
-										<Input type="text" placeholder="Bairro" className="capitalize" {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+					<FormField
+						control={form.control}
+						name="address.number"
+						render={({ field }) => (
+							<FormItem>
+								<FormControl>
+									<Input
+										type="text"
+										placeholder="Número"
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-						<FormField
-							control={form.control}
-							name="address.referencePoint"
-							render={({ field }) => (
-								<FormItem>
-									<FormControl>
-										<Input
-											type="text"
-											placeholder="Ponto de referência"
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+					<FormField
+						control={form.control}
+						name="address.district"
+						render={({ field }) => (
+							<FormItem>
+								<FormControl>
+									<Input type="text" placeholder="Bairro" className="capitalize" {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-						<FormField
-							control={form.control}
-							name="address.state"
-							render={({ field }) => (
-								<FormItem>
-									<FormControl>
-										<Input
-											type="text"
-											placeholder="UF"
-											className="uppercase"
-											maxLength={2}
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+					<FormField
+						control={form.control}
+						name="address.referencePoint"
+						render={({ field }) => (
+							<FormItem>
+								<FormControl>
+									<Input
+										type="text"
+										placeholder="Ponto de referência"
+										className="capitalize"
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-						<FormField
-							control={form.control}
-							name="address.city"
-							render={({ field }) => (
-								<FormItem>
-									<FormControl>
-										<Input
-											type="text"
-											placeholder="Cidade"
-											className="capitalize"
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-					</fieldset>
-				</div>
+					<FormField
+						control={form.control}
+						name="address.state"
+						render={({ field }) => (
+							<FormItem>
+								<FormControl>
+									<Input
+										type="text"
+										placeholder="UF"
+										className="uppercase"
+										maxLength={2}
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name="address.city"
+						render={({ field }) => (
+							<FormItem>
+								<FormControl>
+									<Input
+										type="text"
+										placeholder="Cidade"
+										className="capitalize"
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</fieldset>
 
 				<Button type="submit" disabled={form.formState.isSubmitting}>
 					{form.formState.isSubmitting ? (
