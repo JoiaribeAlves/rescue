@@ -45,8 +45,10 @@ model Address {
   number         String
   district       String
   referencePoint String?
+  zipCode        String?
   city           String
   state          String   @default("RS")
+  mapUrl         String?
   rescue         Rescue?  @relation(fields: [rescueId], references: [id])
   rescueId       String?  @unique
   shelter        Shelter? @relation(fields: [shelterId], references: [id])
