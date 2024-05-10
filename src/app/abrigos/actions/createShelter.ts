@@ -4,7 +4,11 @@ import { db } from "@/lib/db";
 import { IAddress } from "@/interfaces";
 
 interface ICreateShelter {
-	shelterName: string;
+	name: string;
+	type: string;
+	capacity: string;
+	shelteredPeople: string;
+	imageUrl: string;
 	address: IAddress;
 }
 
@@ -12,7 +16,11 @@ export async function createShelter(data: ICreateShelter) {
 	try {
 		const shelter = await db.shelter.create({
 			data: {
-				name: data.shelterName,
+				name: data.name,
+				type: data.type,
+				capacity: Number(data.capacity),
+				shelteredPeople: Number(data.shelteredPeople),
+				imageUrl: data.imageUrl,
 			},
 		});
 
@@ -21,8 +29,10 @@ export async function createShelter(data: ICreateShelter) {
 				street: data.address.street,
 				number: data.address.number,
 				district: data.address.district,
+				zipCode: data.address.zipCode,
 				city: data.address.city,
 				state: data.address.state,
+				mapUrl: data.address.mapUrl,
 				shelterId: shelter.id,
 			},
 		});
