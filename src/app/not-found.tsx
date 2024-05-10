@@ -1,20 +1,20 @@
 import Link from "next/link";
+import { HomeIcon } from "lucide-react";
 
 export default function NotFound() {
 	return (
-		<div className="flex flex-1 items-center justify-center">
-			<div className="flex flex-col w-fit gap-5 items-center justify-center">
-				<h2 className="text-3xl lg:text-4xl font-semibold text-center">
-					Ooops, página não encontrada!
-				</h2>
+		<div className="flex flex-col grow gap-3 items-center justify-center">
+			<h1 className="text-2xl lg:text-3xl font-semibold text-center">
+				Ooops! página não encontrada
+			</h1>
 
-				<Link
-					href="/"
-					className="p-3 bg-primary text-primary-foreground hover:bg-primary/90 rounded-md"
-				>
-					Voltar para tela inicial
-				</Link>
-			</div>
+			<Link
+				href="/"
+				className="flex items-center gap-1 p-3 bg-primary font-medium text-primary-foreground hover:bg-primary/90 rounded-md transition-colors"
+			>
+				<HomeIcon size={14} className="text-sm" />
+				Página inicial
+			</Link>
 		</div>
 	);
 }
