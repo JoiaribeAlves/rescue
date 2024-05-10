@@ -20,13 +20,15 @@ model Rescue {
 }
 
 model Shelter {
-  id         String   @id @default(uuid())
-  name       String
-  type       String   @default("People")
-  imageUrl   String?
-  address    Address?
-  createdAt  DateTime @default(now())
-  updateddAt DateTime @updatedAt
+  id              String   @id @default(uuid())
+  name            String
+  type            String   @default("People")
+  capacity        Int?
+  shelteredPeople Int?
+  imageUrl        String?
+  address         Address?
+  createdAt       DateTime @default(now())
+  updateddAt      DateTime @updatedAt
 }
 
 model Water {
