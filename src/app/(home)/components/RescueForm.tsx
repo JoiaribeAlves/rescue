@@ -4,21 +4,20 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2Icon } from "lucide-react";
+import { toast } from "sonner";
+import { NumericFormat, PatternFormat } from "react-number-format";
 
+import { createRescue } from "@/app/(home)/actions/createRescue";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
 	Form,
 	FormField,
 	FormItem,
 	FormControl,
 	FormMessage,
-} from "../../../components/ui/form";
-
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "../../../components/ui/input";
-import { Button } from "../../../components/ui/button";
-import { createRescue } from "@/app/(home)/actions/createRescue";
-import { toast } from "sonner";
-import { NumericFormat, PatternFormat } from "react-number-format";
+} from "@/components/ui/form";
 
 const regex = {
 	onlyAllowsNumbers: /^\(\d{2}\) \d{5}-\d{4}$/,
@@ -28,26 +27,28 @@ const regex = {
 
 const formSchema = z.object({
 	contactInfo: z.object({
-		name: z.string().min(1, "Nome do contato é obrigatório"),
+		name: z.string().trim().min(1, "Nome do contato é obrigatório"),
 		phoneNumber: z
 			.string()
+			.trim()
 			.length(15, "Número de telefone inválido")
 			.regex(regex.onlyAllowsNumbers, "Número de telefone inválido")
 			.transform((str) => str.replace(regex.onlyNumbers, "")),
 	}),
 	peopleQuantity: z
 		.string()
+		.trim()
 		.min(1, "Número de pessoas é obrigatório")
 		.regex(regex.integerPositive, "Digite apenas números"),
 	address: z.object({
-		street: z.string().min(1, "Nome da rua é obrigatório"),
-		number: z.string().min(1, "Número da casa é obrigatório"),
-		district: z.string().min(1, "Bairro é obrigatório"),
-		referencePoint: z.string().min(0),
-		state: z.string().length(2, "Informe apenas a UF"),
-		city: z.string().min(1, "Cidade é obrigatória"),
+		street: z.string().trim().min(1, "Nome da rua é obrigatório"),
+		number: z.string().trim().min(1, "Número da casa é obrigatório"),
+		district: z.string().trim().min(1, "Bairro é obrigatório"),
+		referencePoint: z.string().trim().min(0),
+		state: z.string().trim().toUpperCase().length(2, "Informe apenas a UF"),
+		city: z.string().trim().min(1, "Cidade é obrigatória"),
 	}),
-	note: z.string().min(0),
+	note: z.string().trim().min(0),
 });
 
 export function RescueForm() {
@@ -108,6 +109,7 @@ export function RescueForm() {
 										<Input
 											type="text"
 											placeholder="Nome do contato"
+											className="capitalize"
 											{...field}
 										/>
 									</FormControl>
@@ -181,6 +183,7 @@ export function RescueForm() {
 										<Input
 											type="text"
 											placeholder="Nome da rua"
+											className="capitalize"
 											{...field}
 										/>
 									</FormControl>
@@ -212,7 +215,12 @@ export function RescueForm() {
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
-										<Input type="text" placeholder="Bairro" {...field} />
+										<Input
+											type="text"
+											placeholder="Bairro"
+											className="capitalize"
+											{...field}
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -228,6 +236,7 @@ export function RescueForm() {
 										<Input
 											type="text"
 											placeholder="Ponto de referência"
+											className="capitalize"
 											{...field}
 										/>
 									</FormControl>
@@ -246,6 +255,7 @@ export function RescueForm() {
 											type="text"
 											placeholder="Estado"
 											maxLength={2}
+											className="uppercase"
 											{...field}
 										/>
 									</FormControl>
@@ -263,6 +273,7 @@ export function RescueForm() {
 										<Input
 											type="text"
 											placeholder="Cidade"
+											className="capitalize"
 											{...field}
 										/>
 									</FormControl>
