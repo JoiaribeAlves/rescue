@@ -8,10 +8,10 @@ interface IGetSheltersList {
 	district: string;
 }
 
-export async function getSheltersList(data: IGetSheltersList): Promise<IShelter[] | null> {
+export async function getShelterList(data: IGetSheltersList): Promise<IShelter[] | null> {
 	let whereCondition = {};
 
-	if (data.cityName && data.district.length) {
+	if (data.cityName && data.district) {
 		whereCondition = {
 			address: {
 				city: {
@@ -41,6 +41,9 @@ export async function getSheltersList(data: IGetSheltersList): Promise<IShelter[
 			select: {
 				id: true,
 				name: true,
+				capacity: true,
+				shelteredPeople: true,
+				imageUrl: true,
 				type: true,
 				address: {
 					select: {
@@ -48,8 +51,10 @@ export async function getSheltersList(data: IGetSheltersList): Promise<IShelter[
 						number: true,
 						district: true,
 						referencePoint: true,
-						state: true,
+						zipCode: true,
 						city: true,
+						state: true,
+						mapUrl: true,
 					},
 				},
 			},
