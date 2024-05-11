@@ -6,7 +6,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FilterIcon, Loader2Icon } from "lucide-react";
 
-import { getSheltersList } from "../actions/getSheltersList";
+import { getShelterList } from "../actions/getShelterList";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,8 +24,7 @@ const formSchema = z.object({
 	district: z.string().min(0),
 });
 
-export function SheltersList() {
-	const [notFound, setNotFound] = useState(false);
+export function ShelterList() {
 	const [shelters, setShelters] = useState<IShelter[]>([]);
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -37,15 +36,9 @@ export function SheltersList() {
 	});
 
 	const onSubmit = async (data: z.infer<typeof formSchema>) => {
-		const shelters = await getSheltersList(data);
+		const shelters = await getShelterList(data);
 
 		if (!shelters) return null;
-
-		if (shelters.length === 0) {
-			setNotFound(true);
-		} else {
-			setNotFound(false);
-		}
 
 		setShelters(shelters);
 	};
@@ -118,19 +111,9 @@ export function SheltersList() {
 				</Form>
 			</div>
 
-			<>
-				{
-					notFound ? (
-						<h2 className="font-semibold text-sm opacity-75">
-							Nenhum abrigo foi encontrado
-						</h2>
-					) : (
-						<ul className="grid gap-4 grid-cols-1 lg:grid-cols-4">
-							<ShelterItem shelters={shelters} />
-						</ul>
-					)
-				}
-			</>
+			<ul className="grid gap-3 grid-cols-1 lg:grid-cols-4">
+				<ShelterItem shelters={shelters} />
+			</ul>
 		</>
 	);
 }
