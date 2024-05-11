@@ -24,8 +24,8 @@ import { Button } from "@/components/ui/button";
 const formSchema = z.object({
 	name: z.string().trim().min(1, "Nome do abrigo é obrigatório"),
 	type: z.string().trim().min(1, "Escolha uma opção"),
-	capacity: z.string().trim().min(0),
-	shelteredPeople: z.string().trim().min(0),
+	capacity: z.string().trim().optional(),
+	shelteredPeople: z.string().trim().optional(),
 	imageUrl: z.string().trim().min(0),
 	address: z.object({
 		zipCode: z.string().trim().min(0),
