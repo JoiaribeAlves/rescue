@@ -21,13 +21,13 @@ export async function createShelter(data: ICreateShelter) {
 
 		await db.address.create({
 			data: {
-				street: data.shelter.address.street,
-				number: data.shelter.address.number,
-				district: data.shelter.address.district,
-				zipCode: data.shelter.address.zipCode,
-				city: data.shelter.address.city,
-				state: data.shelter.address.state,
-				mapUrl: data.shelter.address.mapUrl,
+				street: data.shelter.address?.street ?? "",
+				number: data.shelter.address?.number ?? "S/N",
+				district: data.shelter.address?.district ?? "",
+				zipCode: data.shelter.address?.zipCode,
+				city: data.shelter.address?.city ?? "",
+				state: data.shelter.address?.state,
+				mapUrl: data.shelter.address?.mapUrl,
 				shelterId: shelter.id,
 			},
 		});
