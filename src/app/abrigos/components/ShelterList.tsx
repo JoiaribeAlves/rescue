@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FilterIcon, Loader2Icon } from "lucide-react";
 
 import { getShelterList } from "../actions/getShelterList";
+import { IShelter } from "@/interfaces";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,11 +18,10 @@ import {
 	FormMessage
 } from "@/components/ui/form";
 import { ShelterItem } from "./ShelterItem";
-import { IShelter } from "@/interfaces";
 
 const formSchema = z.object({
-	cityName: z.string().min(1, "Nome da cidade é obrigatório"),
-	district: z.string().min(0),
+	cityName: z.string().trim().min(1, "Nome da cidade é obrigatório"),
+	district: z.string().trim().min(0),
 });
 
 export function ShelterList() {
