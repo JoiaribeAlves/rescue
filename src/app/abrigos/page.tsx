@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { SheltersList } from "./components/SheltersList";
+import { ShelterList } from "./components/ShelterList";
 import { ContactList } from "@/components/ContactList";
 
 export const metadata: Metadata = {
@@ -15,7 +15,7 @@ export default function Shelter() {
 
 			<ContactList />
 
-			<SheltersList />
+			<ShelterList />
 		</div>
 	);
 }

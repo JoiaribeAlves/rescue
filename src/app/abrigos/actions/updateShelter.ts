@@ -3,13 +3,16 @@
 import { db } from "@/lib/db";
 import { IShelter } from "@/interfaces";
 
-interface ICreateShelter {
-	shelter: IShelter
+interface IUpdateShelter {
+	shelter: IShelter;
 }
 
-export async function createShelter(data: ICreateShelter) {
+export async function updateShelter(data: IUpdateShelter) {
 	try {
-		const shelter = await db.shelter.create({
+		await db.shelter.update({
+			where: {
+				id: data.shelter.id,
+			},
 			data: {
 				name: data.shelter.name,
 				type: data.shelter.type,
@@ -19,16 +22,19 @@ export async function createShelter(data: ICreateShelter) {
 			},
 		});
 
-		await db.address.create({
+		await db.address.update({
+			where: {
+				shelterId: data.shelter.id,
+			},
 			data: {
-				street: data.shelter.address?.street ?? "",
-				number: data.shelter.address?.number ?? "S/N",
-				district: data.shelter.address?.district ?? "",
 				zipCode: data.shelter.address?.zipCode,
-				city: data.shelter.address?.city ?? "",
+				street: data.shelter.address?.street,
+				number: data.shelter.address?.number,
+				district: data.shelter.address?.district,
+				referencePoint: data.shelter.address?.referencePoint,
 				state: data.shelter.address?.state,
+				city: data.shelter.address?.city,
 				mapUrl: data.shelter.address?.mapUrl,
-				shelterId: shelter.id,
 			},
 		});
 

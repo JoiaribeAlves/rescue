@@ -1,53 +1,20 @@
-"use client";
-
-import { useState } from "react";
-import { usePathname } from "next/navigation";
-import { toast } from "sonner";
-
 import { shelterType } from "@/helpers/shelterType";
-import { deleteShelter } from "../actions/deleteShelter";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger
-} from "@/components/ui/alert-dialog";
 import { IShelter } from "@/interfaces";
+import { Badge } from "@/components/ui/badge";
 
 interface IShelterItem {
 	shelters: IShelter[];
 }
 
 export function ShelterItem({ shelters }: IShelterItem) {
-	const path = usePathname();
-	const [code, setCode] = useState("");
-
-	async function handleDeleteShelter(id: string, code: string) {
-		const result = await deleteShelter({
-			shelterId: id,
-			verificationCode: code,
-		});
-
-		if (result) {
-			toast.success("Abrigo deletado com sucesso!", {
-				description: "Refaça a busca para atualizar a lista",
-				position: "top-center",
-				duration: 3500,
-			});
-		} else {
-			toast.error("Falha ao deletar o abrigo. Tente novamente.", {
-				position: "top-center",
-				duration: 3500,
-			});
-		}
+	if (shelters.length === 0) {
+		return (
+			<li>
+				<h2 className="font-semibold text-sm opacity-75">
+					Não há dados para apresentar
+				</h2>
+			</li>
+		);
 	}
 
 	return (
@@ -75,62 +42,16 @@ export function ShelterItem({ shelters }: IShelterItem) {
 							<strong>Endereço:</strong>{" "}
 							{shelter.address?.street}{", "}
 							{shelter.address?.number}{", "}
-							{shelter.address?.district}{", "}
-							{shelter.address?.referencePoint}
+							{shelter.address?.district}
+							{shelter.address?.referencePoint
+								? `, ${shelter.address?.referencePoint}`
+								: ""}
 						</p>
 
 						<p><strong>Cidade:</strong> {shelter.address?.city}</p>
 
 						<p><strong>Estado:</strong> {shelter.address?.state}</p>
 					</div>
-
-					{path === "/abrigos/deletar" && (
-						<AlertDialog>
-							<AlertDialogTrigger asChild>
-								<Button
-									variant="destructive"
-									className="w-full"
-								>
-									Deletar abrigo
-								</Button>
-							</AlertDialogTrigger>
-
-							<AlertDialogContent>
-								<AlertDialogHeader>
-									<AlertDialogTitle>
-										Você realmente deseja deletar este abrigo?
-									</AlertDialogTitle>
-
-									<AlertDialogDescription>
-										Esta ação não pode ser desfeita
-									</AlertDialogDescription>
-								</AlertDialogHeader>
-
-								<div>
-									<Input
-										type="text"
-										placeholder="Informe o código de verificação"
-										maxLength={6}
-										onChange={(e) => setCode(e.target.value)}
-									/>
-								</div>
-
-								<AlertDialogFooter>
-									<AlertDialogCancel>
-										Voltar
-									</AlertDialogCancel>
-
-									<AlertDialogAction
-										className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-										disabled={code.length !== 6}
-										onClick={() => handleDeleteShelter(shelter.id, code)}
-									>
-										Deletar abrigo
-									</AlertDialogAction>
-								</AlertDialogFooter>
-							</AlertDialogContent>
-						</AlertDialog>
-					)}
 				</li>
 			))}
 		</>

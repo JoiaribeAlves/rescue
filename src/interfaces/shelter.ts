@@ -1,13 +1,11 @@
+import { IAddress } from "@/interfaces/address";
+
 export interface IShelter {
 	id: string;
 	name: string;
 	type: string;
-	address: {
-		street: string;
-		number: string;
-		district: string;
-		referencePoint: string | null;
-		state: string;
-		city: string;
-	} | null;
+	capacity: number | null;
+	shelteredPeople: number | null;
+	imageUrl: string | null;
+	address: IAddress | null;
 }

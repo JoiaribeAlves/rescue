@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CreateShelterForm } from "./components/CreateShelterForm";
+import { ShelterForm } from "../components/ShelterForm";
 
 export const metadata: Metadata = {
 	title: "Cadastrar abrigo - Enchentes RS",
@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 export default function page() {
 	return (
 		<div className="py-8 px-4 lg:px-8 flex flex-col gap-6">
-			<h1 className="font-semibold text-lg">Novo abrigo</h1>
+			<h1 className="font-semibold text-lg">Cadastrar abrigo</h1>
 
-			<CreateShelterForm />
+			<ShelterForm mode="create" />
 		</div>
 	);
 }
