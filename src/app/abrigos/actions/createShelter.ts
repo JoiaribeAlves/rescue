@@ -1,38 +1,33 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { IAddress } from "@/interfaces";
+import { IShelter } from "@/interfaces";
 
 interface ICreateShelter {
-	name: string;
-	type: string;
-	capacity: string;
-	shelteredPeople: string;
-	imageUrl: string;
-	address: IAddress;
+	shelter: IShelter
 }
 
 export async function createShelter(data: ICreateShelter) {
 	try {
 		const shelter = await db.shelter.create({
 			data: {
-				name: data.name,
-				type: data.type,
-				capacity: Number(data.capacity),
-				shelteredPeople: Number(data.shelteredPeople),
-				imageUrl: data.imageUrl,
+				name: data.shelter.name,
+				type: data.shelter.type,
+				capacity: data.shelter.capacity,
+				shelteredPeople: data.shelter.shelteredPeople,
+				imageUrl: data.shelter.imageUrl,
 			},
 		});
 
 		await db.address.create({
 			data: {
-				street: data.address.street,
-				number: data.address.number,
-				district: data.address.district,
-				zipCode: data.address.zipCode,
-				city: data.address.city,
-				state: data.address.state,
-				mapUrl: data.address.mapUrl,
+				street: data.shelter.address.street,
+				number: data.shelter.address.number,
+				district: data.shelter.address.district,
+				zipCode: data.shelter.address.zipCode,
+				city: data.shelter.address.city,
+				state: data.shelter.address.state,
+				mapUrl: data.shelter.address.mapUrl,
 				shelterId: shelter.id,
 			},
 		});

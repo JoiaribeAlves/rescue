@@ -7,6 +7,8 @@ import { Loader2Icon } from "lucide-react";
 import { toast } from "sonner";
 
 import { createShelter } from "../actions/createShelter";
+import { updateShelter } from "../actions/updateShelter";
+import { IShelter } from "@/interfaces";
 import {
 	Form,
 	FormField,
@@ -22,8 +24,8 @@ import { Button } from "@/components/ui/button";
 const formSchema = z.object({
 	name: z.string().trim().min(1, "Nome do abrigo é obrigatório"),
 	type: z.string().trim().min(1, "Escolha uma opção"),
-	capacity: z.string().trim().min(0),
-	shelteredPeople: z.string().trim().min(0),
+	capacity: z.string().trim().min(0).transform((i) => Number(i)),
+	shelteredPeople: z.string().trim().min(0).transform((i) => Number(i)),
 	imageUrl: z.string().trim().min(0),
 	address: z.object({
 		zipCode: z.string().trim().min(0),
@@ -45,52 +47,47 @@ const formSchema = z.object({
 interface IShelterForm {
 	mode: "create" | "update";
 	defaultValues?: {
-		name: string;
-		type: string;
-		capacity: string;
-		shelteredPeople: string;
-		imageUrl: string;
-		address: {
-			street: string;
-			number: string;
-			district: string;
-			referencePoint: string;
-			zipCode: string;
-			city: string;
-			state: string;
-			mapUrl: string;
-		};
-	};
+		shelter: IShelter;
+	}
 }
 
 export function ShelterForm({ mode, defaultValues }: IShelterForm) {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			name: defaultValues?.name ?? "",
-			capacity: defaultValues?.capacity ?? "",
-			shelteredPeople: defaultValues?.shelteredPeople ?? "",
-			imageUrl: defaultValues?.imageUrl ?? "",
-			type: defaultValues?.type ?? "People",
+			name: defaultValues?.shelter.name ?? "",
+			capacity: defaultValues?.shelter.capacity || undefined,
+			shelteredPeople: defaultValues?.shelter.shelteredPeople || undefined,
+			imageUrl: defaultValues?.shelter.imageUrl ?? "",
+			type: defaultValues?.shelter.type ?? "People",
 			address: {
-				zipCode: defaultValues?.address.zipCode ?? "",
-				street: defaultValues?.address.street ?? "",
-				number: defaultValues?.address.number ?? "",
-				district: defaultValues?.address.city ?? "",
-				referencePoint: defaultValues?.address.referencePoint ?? "",
-				state: defaultValues?.address.state ?? "RS",
-				city: defaultValues?.address.city ?? "",
-				mapUrl: defaultValues?.address.mapUrl ?? "",
-			}
-		}
+				zipCode: defaultValues?.shelter.address?.zipCode ?? "",
+				street: defaultValues?.shelter.address?.street ?? "",
+				number: defaultValues?.shelter.address?.number ?? "",
+				district: defaultValues?.shelter.address?.district ?? "",
+				referencePoint: defaultValues?.shelter.address?.referencePoint ?? "",
+				state: defaultValues?.shelter.address?.state ?? "RS",
+				city: defaultValues?.shelter.address?.city ?? "",
+				mapUrl: defaultValues?.shelter.address?.mapUrl ?? "",
+			},
+		},
 	});
 
 	const onSubmit = async (data: z.infer<typeof formSchema>) => {
 		if (mode === "create") {
-			const result = await createShelter(data);
+			const result = await createShelter({
+				shelter: {
+					...data,
+					id: "",
+				},
+			});
 
 			if (result) {
 				form.reset();
+				// @ts-ignore
+				form.setValue("capacity", "");
+				// @ts-ignore
+				form.setValue("shelteredPeople", "");
 
 				toast.success("Abrigo cadastrado com sucesso", {
 					position: "top-center",
@@ -102,28 +99,26 @@ export function ShelterForm({ mode, defaultValues }: IShelterForm) {
 					duration: 3500,
 				});
 			}
+		} else {
+			const result = await updateShelter({
+				shelter: {
+					...data,
+					id: defaultValues?.shelter.id ?? ""
+				}
+			});
 
-			return true;
+			if (result) {
+				toast.success("Abrigo atualizado com sucesso", {
+					position: "top-center",
+					duration: 3500,
+				});
+			} else {
+				toast.error("Falha ao atualizar abrigo. Tente novamente", {
+					position: "top-center",
+					duration: 3500,
+				});
+			}
 		}
-
-		// TODO: Implement this method
-		// const result = await updateShelter(data);
-
-		// if (result) {
-		// 	form.reset();
-
-		// 	<ShowToast
-		// 		title="Abrigo atualizado com sucesso"
-		// 		type="success"
-		// 	/>;
-		// } else {
-		// 	<ShowToast
-		// 		title="Falha ao atualizar abrigo. Tente novamente"
-		// 		type="error"
-		// 	/>;
-		// }
-
-		// return true;
 	};
 
 	return (
@@ -372,17 +367,34 @@ export function ShelterForm({ mode, defaultValues }: IShelterForm) {
 							</FormItem>
 						)}
 					/>
+
+					<FormField
+						control={form.control}
+						name="address.mapUrl"
+						render={({ field }) => (
+							<FormItem>
+								<FormControl>
+									<Input
+										type="text"
+										placeholder="URL do google maps"
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 				</fieldset>
 
 				<Button type="submit" disabled={form.formState.isSubmitting}>
 					{form.formState.isSubmitting ? (
 						<>
 							<Loader2Icon className="h-4 w-4 mr-1 animate-spin" />
-							Cadastrando
+							{mode === "create" ? "Cadastrando" : "Atualizando"}
 						</>
 					) : (
 						<>
-							Cadastrar abrigo
+							{mode === "create" ? "Cadastrar abrigo" : "Atualizar abrigo"}
 						</>
 					)}
 				</Button>
