@@ -11,7 +11,7 @@ export function ShelterItem({ shelters }: IShelterItem) {
 		return (
 			<li>
 				<h2 className="font-semibold text-sm opacity-75">
-					Nenhum abrigo foi encontrado
+					Não há dados para apresentar
 				</h2>
 			</li>
 		);
