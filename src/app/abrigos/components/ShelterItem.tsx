@@ -1,6 +1,8 @@
 import { shelterType } from "@/helpers/shelterType";
+import { calculatePercentage } from "@/helpers/calculatePercentage";
 import { IShelter } from "@/interfaces";
 import { Badge } from "@/components/ui/badge";
+import { ProgressBar } from "./ProgressBar";
 
 interface IShelterItem {
 	shelters: IShelter[];
@@ -22,11 +24,11 @@ export function ShelterItem({ shelters }: IShelterItem) {
 			{shelters.map((shelter, index) => (
 				<li
 					key={index}
-					className="p-3 rounded-md shadow-lg bg-white flex flex-col gap-3"
+					className="p-3 rounded-md shadow-lg bg-white flex flex-col gap-3 text-sm"
 				>
 					<div className="flex flex-col gap-3 grow">
 						<div className="flex items-center justify-between">
-							<h3 className="font-bold">Abrigo: {index + 1}</h3>
+							<h3 className="font-semibold">Abrigo: {index + 1}</h3>
 
 							<Badge
 								variant="secondary"
@@ -36,10 +38,10 @@ export function ShelterItem({ shelters }: IShelterItem) {
 							</Badge>
 						</div>
 
-						<p><strong>Nome:</strong> {shelter.name}</p>
+						<p><strong className="font-semibold">Nome:</strong> {shelter.name}</p>
 
 						<p>
-							<strong>Endereço:</strong>{" "}
+							<strong className="font-semibold">Endereço:</strong>{" "}
 							{shelter.address?.street}{", "}
 							{shelter.address?.number}{", "}
 							{shelter.address?.district}
@@ -48,9 +50,25 @@ export function ShelterItem({ shelters }: IShelterItem) {
 								: ""}
 						</p>
 
-						<p><strong>Cidade:</strong> {shelter.address?.city}</p>
+						<p><strong className="font-semibold">Cidade:</strong> {shelter.address?.city}</p>
 
-						<p><strong>Estado:</strong> {shelter.address?.state}</p>
+						<p><strong className="font-semibold">Estado:</strong> {shelter.address?.state}</p>
+
+						<div className="flex items-center gap-1">
+							<strong className="font-semibold">Lotação:</strong>
+							{shelter.capacity && shelter.shelteredPeople ? (
+								<ProgressBar
+									capacity={shelter.capacity}
+									shelteredPeople={shelter.shelteredPeople}
+									percentage={calculatePercentage({
+										capacity: shelter.capacity,
+										shelteredPeople: shelter.shelteredPeople
+									})}
+								/>
+							) : (
+								<p>Não informada</p>
+							)}
+						</div>
 					</div>
 				</li>
 			))}
