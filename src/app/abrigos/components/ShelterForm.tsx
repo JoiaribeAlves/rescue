@@ -24,8 +24,8 @@ import { Button } from "@/components/ui/button";
 const formSchema = z.object({
 	name: z.string().trim().min(1, "Nome do abrigo é obrigatório"),
 	type: z.string().trim().min(1, "Escolha uma opção"),
-	capacity: z.string().trim().min(0).transform((i) => Number(i)),
-	shelteredPeople: z.string().trim().min(0).transform((i) => Number(i)),
+	capacity: z.string().trim().min(0),
+	shelteredPeople: z.string().trim().min(0),
 	imageUrl: z.string().trim().min(0),
 	address: z.object({
 		zipCode: z.string().trim().min(0),
@@ -56,8 +56,8 @@ export function ShelterForm({ mode, defaultValues }: IShelterForm) {
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			name: defaultValues?.shelter.name ?? "",
-			capacity: defaultValues?.shelter.capacity || undefined,
-			shelteredPeople: defaultValues?.shelter.shelteredPeople || undefined,
+			capacity: String(defaultValues?.shelter.capacity || "") || undefined,
+			shelteredPeople: String(defaultValues?.shelter.shelteredPeople || "") || undefined,
 			imageUrl: defaultValues?.shelter.imageUrl ?? "",
 			type: defaultValues?.shelter.type ?? "People",
 			address: {
@@ -79,6 +79,8 @@ export function ShelterForm({ mode, defaultValues }: IShelterForm) {
 				shelter: {
 					...data,
 					id: "",
+					capacity: Number(data.capacity),
+					shelteredPeople: Number(data.shelteredPeople),
 				},
 			});
 
@@ -103,7 +105,9 @@ export function ShelterForm({ mode, defaultValues }: IShelterForm) {
 			const result = await updateShelter({
 				shelter: {
 					...data,
-					id: defaultValues?.shelter.id ?? ""
+					id: defaultValues?.shelter.id ?? "",
+					capacity: Number(data.capacity),
+					shelteredPeople: Number(data.shelteredPeople),
 				}
 			});
 
