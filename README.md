@@ -105,7 +105,7 @@ npm run dev
 	1.6 Execute as migrations: <br />
 
 	```bash
-	npx prisma migrate deploy
+	npx prisma db push
 	```
 
 Se tudo ocorreu bem, você já pode realizar operações no banco de dados.
