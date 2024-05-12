@@ -80,7 +80,7 @@ npm run dev
 1.4 Na variável **VERIFICATION_CODE** você deve definir um código de 6 dígitos, por exemplo: 123456. O código é utilizado nas telas de exclusão e edição para garantir que somente pessoas que saibam o código possam editar ou excluir dados.<br />
 1.5 Execute as migrations:
 ```bash
-npx prisma db push
+npx prisma migrate dev
 ```
 Se tudo ocorreu bem, você já pode realizar operações no banco de dados.
 </div>
