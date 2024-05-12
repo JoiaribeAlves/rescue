@@ -17,8 +17,6 @@
 
 ## Índice
 
-- [Desabrigados](#desabrigados)
-- [Índice](#índice)
 - [Descrição](#descrição)
 - [Tecnologias utilizadas](#tecnologias-utilizadas)
 - [Funcionalidades](#funcionalidades)
@@ -59,7 +57,7 @@ O projeto [desabrigados](https://desabrigados.com.br) está sendo  desenvolvido 
 - [X] `Cadastrar abrigo`: Permite que o usuário cadastre um abrigo, informando o nome, capacidade, endereço entre outras informações.
 - [X] `Consultar abrigos`: Permite ao usuário consultar a lista de abrigos disponíveis em sua cidade, é possível filtrar por cidade e bairro;
 - [X] `Editar abrigo`: Permite que o usuário altere as informações de um abrigo.
-- [ ] `Excluir abrigo`: Permite que o usuário exclua um abrigo do banco de dados.
+- [ ] `Excluir abrigo`: Permite que o usuário exclua um abrigo.
 </div>
 
 <div id="como-executar-frontend">
@@ -93,7 +91,6 @@ O projeto [desabrigados](https://desabrigados.com.br) está sendo  desenvolvido 
 
 ### Como executar o projeto (Banco de dados)
 
-1. Configure as variáveis de ambiente:
 1. Crie um arquivo na raiz do projeto chamado `.env`
 1. Copie e cole as variáveis contidas no arquivo `.env.example`
 1. Na variável **DATABASE_UL** você deve definir a URL de conexão com o banco de dados. Por exemplo: _postgresql://usuario:senha@localhost:5432/nome-do-banco-de-dados_
