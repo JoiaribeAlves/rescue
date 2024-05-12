@@ -68,28 +68,24 @@ O projeto [desabrigados](https://desabrigados.com.br) está sendo  desenvolvido 
 
 1. Clone o repositório:
 
-```bash
-git clone https://github.com/JoiaribeAlves/rescue.git
-```
-
+	```bash
+	git clone https://github.com/JoiaribeAlves/rescue.git
+	```
 1. Entre no diretório:
 
-```bash
-cd rescue
-```
-
+	```bash
+	cd rescue
+	```
 1. Instale as dependências:
 
-```bash
-npm install
-```
-
+	```bash
+	npm install
+	```
 1. Inicie o servidor de desenvolvimento:
 
-```bash
-npm run dev
-```
-
+	```bash
+	npm run dev
+	```
 1. Acesse pelo navegador: [localhost:3000](http://localhost:3000)
 </div>
 
@@ -98,21 +94,20 @@ npm run dev
 ### Como executar o projeto (Banco de dados)
 
 1. Configure as variáveis de ambiente:
-	1. Crie um arquivo na raiz do projeto chamado `.env`
-	1. Copie e cole as variáveis contidas no arquivo `.env.example`
-	1. Na variável **DATABASE_UL** você deve definir a URL de conexão com o banco de dados. Por exemplo: _postgresql://usuario:senha@localhost:5432/nome-do-banco-de-dados_
-	1. Na variável **VERIFICATION_CODE** você deve definir um código de 6 dígitos, por exemplo: 123456. O código é utilizado nas telas de exclusão e edição para garantir que somente pessoas que saibam o código possam editar ou excluir dados.
-	1. Caso queira usar docker: (se não for usar, ignore esta etapa)
+1. Crie um arquivo na raiz do projeto chamado `.env`
+1. Copie e cole as variáveis contidas no arquivo `.env.example`
+1. Na variável **DATABASE_UL** você deve definir a URL de conexão com o banco de dados. Por exemplo: _postgresql://usuario:senha@localhost:5432/nome-do-banco-de-dados_
+1. Na variável **VERIFICATION_CODE** você deve definir um código de 6 dígitos, por exemplo: 123456. O código é utilizado nas telas de exclusão e edição para garantir que somente pessoas que saibam o código possam editar ou excluir dados.
+1. Caso queira usar docker: (se não for usar, ignore esta etapa)
 
 	```bash
 	docker-compose up -d
 	```
-	6. Execute as migrations: <br />
+1. Execute as migrations: <br />
 
 	```bash
 	npx prisma generate && npx prisma db push
 	```
-
 Se tudo ocorreu bem, você já pode realizar operações no banco de dados.
 </div>
 
