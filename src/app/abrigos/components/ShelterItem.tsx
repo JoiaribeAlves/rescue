@@ -1,5 +1,9 @@
+import Link from "next/link";
+import { ChevronRightIcon } from "lucide-react";
+
 import { shelterType } from "@/helpers/shelterType";
 import { calculatePercentage } from "@/helpers/calculatePercentage";
+import { calculateLastUpdateDistance } from "@/helpers/calculateLastUpdateDistance";
 import { IShelter } from "@/interfaces";
 import { Badge } from "@/components/ui/badge";
 import { ProgressBar } from "./ProgressBar";
@@ -27,16 +31,12 @@ export function ShelterItem({ shelters }: IShelterItem) {
 					className="p-3 rounded-md shadow-lg bg-white flex flex-col gap-3 text-sm"
 				>
 					<div className="flex flex-col gap-3 grow">
-						<div className="flex items-center justify-between">
-							<h3 className="font-semibold">Abrigo: {index + 1}</h3>
-
-							<Badge
-								variant="secondary"
-								className="bg-[#fff3cd] text-[#745c16] hover:bg-[#fff3cd]"
-							>
-								{shelterType(shelter.type)}
-							</Badge>
-						</div>
+						<Badge
+							variant="secondary"
+							className="bg-[#fff3cd] text-[#745c16] hover:bg-[#fff3cd] justify-center"
+						>
+							{shelterType(shelter.type)}
+						</Badge>
 
 						<p><strong className="font-semibold">Nome:</strong> {shelter.name}</p>
 
@@ -68,6 +68,20 @@ export function ShelterItem({ shelters }: IShelterItem) {
 							) : (
 								<p>Não informada</p>
 							)}
+						</div>
+
+						<p>
+							<strong className="font-semibold">Atualizado há:</strong>{" "}
+							{calculateLastUpdateDistance(shelter.updateddAt)}
+						</p>
+
+						<div className="text-right">
+							<Link
+								href={`/abrigos/detalhes/${shelter.id}`}
+								className="inline-flex items-center gap-1 text-primary hover:underline">
+								Ver detalhes
+								<ChevronRightIcon size={14} />
+							</Link>
 						</div>
 					</div>
 				</li>
