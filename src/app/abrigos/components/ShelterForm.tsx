@@ -19,9 +19,14 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { capitalizeWords } from "@/helpers/capitalizeWords";
 
 const formSchema = z.object({
-	name: z.string().trim().min(1, "Nome do abrigo é obrigatório"),
+	name: z
+		.string()
+		.trim()
+		.min(1, "Nome do abrigo é obrigatório")
+		.transform((value) => capitalizeWords(value)),
 	type: z.string().trim().min(1, "Escolha uma opção"),
 	capacity: z.string().trim().optional(),
 	shelteredPeople: z.string().trim().optional(),
@@ -29,14 +34,27 @@ const formSchema = z.object({
 	address: z.object({
 		zipCode: z.string().trim().min(0),
 		street: z
-			.string().trim().min(1, "Nome da rua/avenida é obrigatória"),
+			.string()
+			.trim()
+			.min(1, "Nome da rua/avenida é obrigatória")
+			.transform((value) => capitalizeWords(value)),
 		number: z
 			.string().trim().min(1, "Número é obrigatório"),
 		district: z
-			.string().trim().min(1, "Bairro é obrigatório"),
-		referencePoint: z.string().trim().min(0),
+			.string()
+			.trim()
+			.min(1, "Bairro é obrigatório")
+			.transform((value) => capitalizeWords(value)),
+		referencePoint: z
+			.string()
+			.trim()
+			.min(0)
+			.transform((value) => value.charAt(0).toUpperCase() + value.slice(1)),
 		city: z
-			.string().trim().min(1, "Cidade é obrigatória"),
+			.string()
+			.trim()
+			.min(1, "Cidade é obrigatória")
+			.transform((value) => capitalizeWords(value)),
 		state: z
 			.string().trim().toUpperCase().length(2, "Informe apenas a UF"),
 		mapUrl: z.string().trim().min(0),
@@ -341,7 +359,6 @@ export function ShelterForm({ mode, defaultValues }: IShelterForm) {
 									<Input
 										type="text"
 										placeholder="Ponto de referência"
-										className="capitalize"
 										{...field}
 									/>
 								</FormControl>
