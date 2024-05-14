@@ -1,10 +1,12 @@
 "use server";
 
+import { IShelter } from "@/interfaces";
+
 import { db } from "@/lib/db";
 
 export async function getShelterById(shelterId: string) {
 	try {
-		const shelter = await db.shelter.findUnique({
+		const shelter: IShelter | null = await db.shelter.findUnique({
 			where: {
 				id: shelterId,
 			},
@@ -15,6 +17,7 @@ export async function getShelterById(shelterId: string) {
 				shelteredPeople: true,
 				imageUrl: true,
 				type: true,
+				updateddAt: true,
 				address: {
 					select: {
 						street: true,
