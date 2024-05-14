@@ -7,6 +7,7 @@ import { Loader2Icon } from "lucide-react";
 import { toast } from "sonner";
 import { NumericFormat, PatternFormat } from "react-number-format";
 
+import { capitalizeWords } from "@/helpers/capitalizeWords";
 import { createRescue } from "@/app/(home)/actions/createRescue";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -27,7 +28,11 @@ const regex = {
 
 const formSchema = z.object({
 	contactInfo: z.object({
-		name: z.string().trim().min(1, "Nome do contato é obrigatório"),
+		name: z
+			.string()
+			.trim()
+			.min(1, "Nome do contato é obrigatório")
+			.transform((value) => capitalizeWords(value)),
 		phoneNumber: z
 			.string()
 			.trim()
@@ -41,12 +46,28 @@ const formSchema = z.object({
 		.min(1, "Número de pessoas é obrigatório")
 		.regex(regex.integerPositive, "Digite apenas números"),
 	address: z.object({
-		street: z.string().trim().min(1, "Nome da rua é obrigatório"),
+		street: z
+			.string()
+			.trim()
+			.min(1, "Nome da rua é obrigatório")
+			.transform((value) => capitalizeWords(value)),
 		number: z.string().trim().min(1, "Número da casa é obrigatório"),
-		district: z.string().trim().min(1, "Bairro é obrigatório"),
-		referencePoint: z.string().trim().min(0),
+		district: z
+			.string()
+			.trim()
+			.min(1, "Bairro é obrigatório")
+			.transform((value) => capitalizeWords(value)),
+		referencePoint: z
+			.string()
+			.trim()
+			.min(0)
+			.transform((value) => value.charAt(0).toUpperCase() + value.slice(1)),
 		state: z.string().trim().toUpperCase().length(2, "Informe apenas a UF"),
-		city: z.string().trim().min(1, "Cidade é obrigatória"),
+		city: z
+			.string()
+			.trim()
+			.min(1, "Cidade é obrigatória")
+			.transform((value) => capitalizeWords(value)),
 	}),
 	note: z.string().trim().min(0),
 });
@@ -236,7 +257,6 @@ export function RescueForm() {
 										<Input
 											type="text"
 											placeholder="Ponto de referência"
-											className="capitalize"
 											{...field}
 										/>
 									</FormControl>
