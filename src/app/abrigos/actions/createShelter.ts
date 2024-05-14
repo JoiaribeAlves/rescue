@@ -1,10 +1,25 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { IShelter } from "@/interfaces";
 
 interface ICreateShelter {
-	shelter: IShelter
+	shelter: {
+		name: string;
+		type: string;
+		capacity: number | null;
+		shelteredPeople: number | null;
+		imageUrl: string | null;
+		address: {
+			street: string;
+			number: string;
+			district: string;
+			referencePoint: string | null;
+			zipCode: string | null;
+			city: string;
+			state: string;
+			mapUrl: string | null;
+		}
+	}
 }
 
 export async function createShelter(data: ICreateShelter) {

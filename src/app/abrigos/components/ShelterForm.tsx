@@ -8,7 +8,6 @@ import { toast } from "sonner";
 
 import { createShelter } from "../actions/createShelter";
 import { updateShelter } from "../actions/updateShelter";
-import { IShelter } from "@/interfaces";
 import {
 	Form,
 	FormField,
@@ -47,7 +46,24 @@ const formSchema = z.object({
 interface IShelterForm {
 	mode: "create" | "update";
 	defaultValues?: {
-		shelter: IShelter;
+		shelter: {
+			id: string;
+			name: string;
+			type: string;
+			capacity: number | null;
+			shelteredPeople: number | null;
+			imageUrl: string | null;
+			address: {
+				street: string;
+				number: string;
+				district: string;
+				referencePoint: string | null;
+				zipCode: string | null;
+				city: string;
+				state: string;
+				mapUrl: string | null;
+			}
+		}
 	}
 }
 
@@ -78,7 +94,6 @@ export function ShelterForm({ mode, defaultValues }: IShelterForm) {
 			const result = await createShelter({
 				shelter: {
 					...data,
-					id: "",
 					capacity: Number(data.capacity),
 					shelteredPeople: Number(data.shelteredPeople),
 				},

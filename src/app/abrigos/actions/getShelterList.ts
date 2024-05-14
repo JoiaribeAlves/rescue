@@ -45,6 +45,7 @@ export async function getShelterList(data: IGetSheltersList): Promise<IShelter[]
 				shelteredPeople: true,
 				imageUrl: true,
 				type: true,
+				updateddAt: true,
 				address: {
 					select: {
 						street: true,

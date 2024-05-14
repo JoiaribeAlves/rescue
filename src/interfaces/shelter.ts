@@ -8,4 +8,5 @@ export interface IShelter {
 	shelteredPeople: number | null;
 	imageUrl: string | null;
 	address: IAddress | null;
+	updateddAt: Date;
 }
