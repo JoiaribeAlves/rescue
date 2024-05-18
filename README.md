@@ -67,7 +67,7 @@ O projeto [desabrigados](https://desabrigados.com.br) está sendo  desenvolvido 
 1. Clone o repositório:
 
 	```bash
-	git clone git@github.com:https://github.com/JoiaribeAlves/rescue.git
+	git clone git@github.com:JoiaribeAlves/rescue.git
 	```
 1. Entre no diretório:
 
